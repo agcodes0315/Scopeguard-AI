@@ -240,3 +240,10 @@ AGREEMENT:\n{body.agreement}\n\nCLIENT REQUESTS:\n{body.requests}"""
 
 from backend.workflow import router as workflow_router
 app.include_router(workflow_router)
+
+from backend.workspace import router as workspace_router
+app.include_router(workspace_router)
+
+@app.get("/workspace.js")
+def workspace_script():
+    return FileResponse(ROOT / "frontend" / "workspace.js", media_type="application/javascript")
