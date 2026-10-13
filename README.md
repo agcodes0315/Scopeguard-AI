@@ -131,3 +131,11 @@ $env:SCOPEGUARD_URL='http://127.0.0.1:8001'
 This repository contains 24 human-labeled examples. Their existence is **not** an accuracy score; run the optional evaluator against your local Gemma model and review results.
 
 For competition claims and Windows instructions, read `UPGRADE_GUIDE.md`.
+
+---
+
+## ScopeGuard v2 additions (October 2026)
+
+**Agreement Vault** stores local project-level agreement versions with SHA-256 hashes and source-line labels. **Scope Inbox** stores incoming message text pasted by the freelancer under a project for repeat analysis. **Client-ready Reply Drafts** produce editable templates for a proposal or clarification, without sending any email. A new local workspace API lives in `backend/workspace.py` and its browser companion lives in `frontend/workspace.js`. See [`START_HERE.md`](START_HERE.md) for full instructions and security limitations and [`PR_WORKFLOW.md`](PR_WORKFLOW.md) for GitHub review/merge steps.
+
+**Security:** These local workspace routes do not implement authentication. They must not be deployed as an Internet-accessible customer application in the current state. Use fictional/sanitized data. This demo is not a digital signing or payment service.
