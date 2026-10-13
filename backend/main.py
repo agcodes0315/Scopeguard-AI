@@ -8,9 +8,10 @@ import urllib.request
 from pathlib import Path
 from typing import Literal
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
+from backend.documents import extract_document
 
 ROOT = Path(__file__).resolve().parent.parent
 MODEL = os.getenv("OLLAMA_MODEL", "gemma3:4b")
@@ -89,6 +90,16 @@ def proposal_page():
 @app.get("/proposal.js")
 def proposal_script():
     return FileResponse(ROOT / "frontend" / "proposal.js", media_type="application/javascript")
+
+@app.post("/api/documents/extract")
+async def upload_agreement(file: UploadFile = File(...)):
+    """Text-only extraction; no uploaded document is written to disk."""
+    contents = await file.read(3 * 1024 * 1024 + 1)
+    try:
+        return extract_document(file.filename or "", contents)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
 
 @app.get("/api/health")
 def health():
@@ -218,6 +229,8 @@ AGREEMENT:\n{body.agreement}\n\nCLIENT REQUESTS:\n{body.requests}"""
         with connection() as db:
             db.execute('INSERT INTO analyses(id, items_json) VALUES(?, ?)',
                        (analysis_id, json.dumps([item.model_dump() for item in items])))
+        if items and not any(item.classification == 'potential_extra' for item in items):
+            summary = 'No evidence-verified additional charges were found. Some findings may still require review.'
         if items and all(item.classification == 'included' for item in items):
             summary = 'All detected requests appear to be included in the stated agreement. No extra charges are suggested.'
         return AnalyzeResult(analysis_id=analysis_id, summary=summary, items=items, estimated_extra=0,

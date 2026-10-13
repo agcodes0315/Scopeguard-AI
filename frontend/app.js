@@ -7,3 +7,13 @@ function renderEstimates(items){let wrap=$('estimates');wrap.replaceChildren();l
 function recalculate(){let rate=Number($('rate').value);let hours=[...document.querySelectorAll('.hours')].map(x=>Number(x.value)||0);$('total').textContent='Proposed EXTRA total: '+$('currency').value+' '+(hours.reduce((a,b)=>a+b,0)*rate).toFixed(2);}
 $('rate').addEventListener('input',recalculate);$('currency').addEventListener('change',recalculate);
 $('create-proposal').onclick=async()=>{if(!latest)return;let rate=Number($('rate').value), title=$('project-title').value.trim();let chosen=[...document.querySelectorAll('.hours')].filter(node=>Number(node.value)>0);let item_indices=chosen.map(node=>Number(node.dataset.idx));let items=chosen.map(node=>{let item=latest.items[Number(node.dataset.idx)];return {description:item.request,hours:Number(node.value),evidence:item.request_evidence};});if(!items.length||!Number.isFinite(rate)||rate<=0){alert('Enter positive hours for at least one change and a valid hourly rate.');return;}let button=$('create-proposal');button.disabled=true;try{let response=await fetch('/api/proposals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title,currency:$('currency').value,hourly_rate:rate,items,analysis_id:latest.analysis_id,item_indices})});let result=await response.json();if(!response.ok)throw Error(JSON.stringify(result.detail||'Failed to save proposal'));let url=new URL(result.share_path,location.origin).href;$('proposal-link').replaceChildren();let p=document.createElement('p');p.textContent='Customer approval link (anyone with this link can view and decide):';let a=document.createElement('a');a.href=url;a.textContent=url;a.target='_blank';a.rel='noopener';$('proposal-link').append(p,a);await navigator.clipboard?.writeText(url).catch(()=>{});}catch(e){alert(e.message);}finally{button.disabled=false;}};
+
+$('agreement-file').addEventListener('change',async (event)=>{
+ const file=event.target.files?.[0]; if(!file)return;
+ const label=$('upload-status');label.textContent='Reading '+file.name+' locally…';
+ const form=new FormData();form.append('file',file);
+ try{const response=await fetch('/api/documents/extract',{method:'POST',body:form});const result=await response.json();
+ if(!response.ok)throw new Error(typeof result.detail==='string'?result.detail:'Upload failed');
+ $('agreement').value=result.text; label.textContent='Extracted '+result.characters+' characters from '+result.filename+'. Review the text before analysis.';
+ }catch(err){label.textContent='Upload error: '+err.message;}finally{event.target.value='';}
+});

@@ -110,3 +110,24 @@ On Windows the startup script now chooses the first free port between 8001 and 8
 ## v1.2 Billing Safety Patch
 
 See [FIX_NOTES_v1.2.md](FIX_NOTES_v1.2.md) for upgrade instructions, safeguards, and limitations. New proposals require a recorded analysis ID and verified out-of-scope items; included work is not available for extra-charge proposals.
+
+## October 2026: Competition upgrade (v1.3)
+
+Upload selectable-text PDF, DOCX or UTF-8 TXT agreements directly in the left-hand agreement panel (up to 3 MB; max 25 PDF pages). Uploaded bytes are parsed in memory, and extracted text appears in the agreement textbox for review. The text is submitted only when the user clicks Analyze; the API does not retain uploaded files. This is not OCR.
+
+Safety: `included` and `needs_review` items are excluded from automatic change proposals, and the backend independently checks analyzed classifications and evidence. This does not replace contract review, and the demo share-link design must not be exposed publicly without identity and access controls.
+
+### Verify
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\start.ps1
+# Separate VS Code terminal:
+.\.venv\Scripts\python.exe -m pytest -q
+# Use the actual port printed by start.ps1:
+$env:SCOPEGUARD_URL='http://127.0.0.1:8001'
+.\.venv\Scripts\python.exe evaluation\run_evaluation.py
+```
+
+This repository contains 24 human-labeled examples. Their existence is **not** an accuracy score; run the optional evaluator against your local Gemma model and review results.
+
+For competition claims and Windows instructions, read `UPGRADE_GUIDE.md`.

@@ -1,0 +1,170 @@
+[
+  {
+    "id": "phone",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please correct the contact phone number. This is our first revision.",
+    "expected": "included",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "background",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please change Services page color in the first revision.",
+    "expected": "included",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "headline",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please correct Home page heading text in the first revision.",
+    "expected": "included",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "contact_email",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please update the contact email address in the first revision.",
+    "expected": "included",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "typo",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please fix the spelling error in the About page in our first revision.",
+    "expected": "included",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "portfolio_text",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please change the Portfolio description text in the second revision.",
+    "expected": "included",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "careers",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please add a Careers page to the site.",
+    "expected": "potential_extra",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "testimonials",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please add a Testimonials page to the site.",
+    "expected": "potential_extra",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "sixth_page",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please build a new FAQ page.",
+    "expected": "potential_extra",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "third_revision",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "We need a third revision round.",
+    "expected": "potential_extra",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "fourth_revision",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "We need a fourth revision round.",
+    "expected": "potential_extra",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "store",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please add an entirely new shop page.",
+    "expected": "potential_extra",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "login",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please add an account login page.",
+    "expected": "potential_extra",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "blog",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please add a Blog page to the site.",
+    "expected": "potential_extra",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "careers_plus_revision",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Add a Careers page and a third revision round.",
+    "expected": "potential_extra",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "unspecified_polish",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Can you make the site feel premium?",
+    "expected": "needs_review",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "vague_speed",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please make the site much faster.",
+    "expected": "needs_review",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "uncertain_revisions",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "We may need more revisions later.",
+    "expected": "needs_review",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "accessibility",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Can you make the site more accessible?",
+    "expected": "needs_review",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "more_content",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Please add more content everywhere.",
+    "expected": "needs_review",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "maybe_add_page",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Would a Careers page be a good idea?",
+    "expected": "needs_review",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "broken_feature",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "The website is not working. Please fix it.",
+    "expected": "needs_review",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "early_delivery",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Can you deliver everything sooner?",
+    "expected": "needs_review",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  },
+  {
+    "id": "mobile_compatibility",
+    "agreement": "The website consists of Home, About, Services, Portfolio and Contact pages. Two revision rounds are included. Text corrections, color changes and contact information updates during included rounds are covered. Additional pages and any third revision require separate approval and pricing.",
+    "requests": "Could you optimize mobile performance?",
+    "expected": "needs_review",
+    "notes": "Human-labeled test expectation, not validated model behavior."
+  }
+]
