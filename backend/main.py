@@ -178,6 +178,45 @@ def _tentative_request(text: str) -> bool:
     ))
 
 
+def _explicit_extra_policy(label: str, request_quote: str, agreement: str) -> str:
+    """Return an exact contract clause only when a definite extra matches a policy.
+
+    This is a constrained evidence check, NOT a general classifier. Absence of
+    a clear contract rule or unclear intent must fall back to needs_review.
+    """
+    if not request_quote or _tentative_request(request_quote):
+        return ""
+    r = request_quote.lower()
+    a = agreement.lower()
+    clauses = _sentences(agreement)
+
+    # Contract explicitly prices additional pages separately. Only treat an
+    # affirmative request for a genuinely NEW page as a possible extra.
+    # Never treat edits to Home/About/Services/etc as additional pages.
+    new_page = bool(re.search(
+        r"\b(?:add|create|build|develop|include|make)\b.{0,75}\b(?:new |extra |additional )?(?:[a-z][a-z -]{0,30} )?pages?\b", r
+    ))
+    if new_page:
+        # A request for an existing named page is not evidence of a new page.
+        match = re.search(r"\b(?:add|create|build|develop|include|make)\b.{0,75}?\b(?:a|an|the|new|extra|additional)\s+([a-z][a-z -]{0,30}?)\s+pages?\b", r)
+        requested_name = match.group(1).strip() if match else ""
+        if requested_name and re.search(r"\b(?:home|about|services|portfolio|contact)\b", requested_name):
+            return ""
+        for clause in clauses:
+            low = clause.lower()
+            if re.search(r"\b(?:additional|extra|new)\s+pages?\b", low) and re.search(r"\b(?:separate|additional)\s+(?:approval|pricing|cost|charge)|\b(?:out of scope|not included)\b", low):
+                return clause
+
+    # Exceeding an explicitly contracted revision limit is a potential extra.
+    round_match = re.search(r"\b(?:third|3rd|fourth|4th|fifth|5th|sixth|6th|[3-9](?:th)?)(?:\s+revision|\s+round)|\brevision\s+(?:round\s+)?(?:three|four|five|six|[3-9])\b", r)
+    if round_match and re.search(r"\b(?:two|2)\s+(?:rounds?\s+of\s+revisions?|revision\s+rounds?)\b", a):
+        for clause in clauses:
+            low = clause.lower()
+            if 'revision' in low and (re.search(r"\b(?:third|3rd|additional|extra)\b", low) and re.search(r"\b(?:approval|pricing|charge|cost|bill)\b", low)):
+                return clause
+    return ""
+
+
 def _known_included(label: str, agreement: str, request_text: str) -> bool:
     """Confirm only narrow, explicit included work and named revision rounds.
 
@@ -225,6 +264,13 @@ AGREEMENT:\n{body.agreement}\n\nCLIENT REQUESTS:\n{body.requests}"""
             category = item.get("classification", "needs_review")
             if category not in ("included", "potential_extra", "needs_review") or not verified_req:
                 category = "needs_review"
+            # Confirm explicit, evidence-backed additional work even when the
+            # model conservatively labels it needs_review. Never override
+            # exploratory requests, missing client evidence, or unclear scope.
+            policy_clause = _explicit_extra_policy(label, verified_req, body.agreement)
+            if policy_clause and verified_req and not tentative_message:
+                verified_ag = policy_clause
+                category = "potential_extra"
             # Only narrow exact-scope edits may be overridden to included.
             if _known_included(label, body.agreement, body.requests) and verified_req and verified_ag:
                 category = "included"
