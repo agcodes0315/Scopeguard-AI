@@ -324,3 +324,15 @@ app.include_router(workspace_router)
 @app.get("/workspace.js")
 def workspace_script():
     return FileResponse(ROOT / "frontend" / "workspace.js", media_type="application/javascript")
+
+# Hackathon extension. Endpoints fail closed when FalkorDB is unavailable.
+from backend.graph_context import router as graph_router
+app.include_router(graph_router)
+
+@app.get('/graph.html')
+def graph_page():
+    return FileResponse(ROOT / 'frontend' / 'graph.html')
+
+@app.get('/graph.js')
+def graph_script():
+    return FileResponse(ROOT / 'frontend' / 'graph.js', media_type='application/javascript')
