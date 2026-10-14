@@ -150,7 +150,7 @@ def _agreement_clause(label: str, agreement: str) -> str:
         patterns = [('contact information', 'update'), ('phone',), ('contact', 'correction')]
     elif any(k in words for k in ('color', 'colour', 'background')):
         patterns = [('color', 'change'), ('colour', 'change')]
-    elif any(k in words for k in ('heading', 'text correction', 'text update')):
+    elif any(k in words for k in ('heading', 'text correction', 'text update', 'description text', 'portfolio description', 'spelling', 'typo')):
         patterns = [('text', 'correction'), ('heading',)]
     elif any(k in words for k in ('revision', 'round')):
         patterns = [('revision',), ('round',)]
@@ -163,19 +163,39 @@ def _agreement_clause(label: str, agreement: str) -> str:
     return ''
 
 
-def _known_included(label: str, agreement: str, requests: str) -> bool:
-    """Narrow, fail-closed recognition of explicitly included edits within stated first revision."""
-    a = agreement.lower(); label = label.lower(); r = requests.lower()
-    if not any(x in r for x in ('first revision', '1st revision', 'revision round one', 'round 1')):
+def _tentative_request(text: str) -> bool:
+    """Conservative: discussion of future possibilities isn't an approved change.
+
+    Detect exploratory phrasing, without downgrading direct explicit instructions.
+    This is a heuristic, NOT a calibrated model confidence score.
+    """
+    t = " ".join(text.lower().split())
+    return bool(re.search(
+        r"\b(?:may|might|maybe|perhaps|possibly|potentially)\b"
+        r"|\b(?:would|could)\s+(?:a|an|the|adding|we|you|it)\b"
+        r"|\b(?:consider|thinking about|wondering if)\b"
+        r"|\b(?:be a good idea|later|someday)\b", t,
+    ))
+
+
+def _known_included(label: str, agreement: str, request_text: str) -> bool:
+    """Confirm only narrow, explicit included work and named revision rounds.
+
+    Unknown terms, vague requests, and missing contract language remain for review.
+    """
+    a, label, r = agreement.lower(), label.lower(), request_text.lower()
+    if not re.search(r"\b(?:first|second|1st|2nd|round\s*[12])\s+revision\b|\brevision\s*(?:round\s*)?(?:one|two|1|2)\b", r):
         return False
-    if not any(x in a for x in ('two rounds of revisions','two revision rounds','2 rounds of revisions','2 revision rounds')):
+    if not re.search(r"\b(?:two|2)\s+(?:rounds?\s+of\s+revisions?|revision\s+rounds?)\b", a):
         return False
-    if ('phone' in label or 'contact number' in label) and 'contact information updates' in a:
-        return True
-    if any(x in label for x in ('color','colour','background')) and ('color changes' in a or 'colour changes' in a):
-        return True
-    if any(x in label for x in ('heading','text correction','text update')) and 'text corrections' in a:
-        return True
+    if _tentative_request(request_text):
+        return False
+    if re.search(r"\b(?:phone|contact\s+(?:number|email|information)|email address)\b", label):
+        return "contact information updates" in a
+    if re.search(r"\b(?:color|colour|background)\b", label):
+        return "color changes" in a or "colour changes" in a or "color adjustments" in a
+    if re.search(r"\b(?:heading|headline|description|text|typo|spelling)\b", label):
+        return "text corrections" in a or "text updates" in a
     return False
 
 @app.post("/api/analyze", response_model=AnalyzeResult)
@@ -183,7 +203,7 @@ def analyze(body: AnalyzeRequest):
     prompt = f"""Compare the original project agreement against later client requests.
 Return an object with keys: summary (string) and items (array).
 Each item needs: request (short string), classification (exactly one of included, potential_extra, needs_review), agreement_evidence (EXACT contiguous quote from agreement, or empty string), request_evidence (EXACT contiguous quote from client requests, or empty string), reasoning (short explanation), estimated_hours (numeric hours ONLY IF EXPLICITLY supplied in client request, otherwise null).
-For missing evidence use an empty string, and lean needs_review for ambiguity. Do not estimate hours yourself. Do not manufacture monetary values.
+For missing evidence use an empty string, and lean needs_review for ambiguity. Exploratory questions, possible future changes, and tentative requests are needs_review, not potential_extra. Included work during the first or second agreed revision round is included. Do not estimate hours yourself. Do not manufacture monetary values.
 
 AGREEMENT:\n{body.agreement}\n\nCLIENT REQUESTS:\n{body.requests}"""
     raw = call_ollama(prompt)
@@ -191,6 +211,8 @@ AGREEMENT:\n{body.agreement}\n\nCLIENT REQUESTS:\n{body.requests}"""
         parsed = json.loads(raw)
         summary = str(parsed.get("summary", "Review the identified requests."))[:1500]
         items = []
+        # With a single exploratory request, collapse multiple invented sub-items.
+        tentative_message = bool(_sentences(body.requests)) and all(_tentative_request(sentence) for sentence in _sentences(body.requests))
         for item in parsed.get("items", [])[:20]:
             if not isinstance(item, dict):
                 continue
@@ -203,9 +225,14 @@ AGREEMENT:\n{body.agreement}\n\nCLIENT REQUESTS:\n{body.requests}"""
             category = item.get("classification", "needs_review")
             if category not in ("included", "potential_extra", "needs_review") or not verified_req:
                 category = "needs_review"
+            # Only narrow exact-scope edits may be overridden to included.
             if _known_included(label, body.agreement, body.requests) and verified_req and verified_ag:
                 category = "included"
             elif category == "potential_extra" and not verified_ag:
+                category = "needs_review"
+            # Tentative requests are questions, never automatic billing authority.
+            # For a single exploratory message, all model-split items inherit this safeguard.
+            if tentative_message or _tentative_request(verified_req):
                 category = "needs_review"
             # If the model's own reasoning says this is included, do not charge it.
             model_reason = str(item.get("reasoning", "")).lower()
@@ -215,6 +242,10 @@ AGREEMENT:\n{body.agreement}\n\nCLIENT REQUESTS:\n{body.requests}"""
             if not isinstance(hours, (int, float)) or hours < 0 or hours > 1000:
                 hours = None
             # Hours are human-reviewed; do not accept LLM guesses in cost calculation.
+            if tentative_message and items:
+                # One exploratory message may be split into multiple imagined tasks.
+                # Keep one review finding to avoid multiple misleading alerts.
+                continue
             items.append(ScopeItem(
                 request=label,
                 classification=category,
