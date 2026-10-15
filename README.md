@@ -1,4 +1,4 @@
-# ScopeGuard AI 🛡️
+# ScopeGuard AI Ã°Å¸â€ºÂ¡Ã¯Â¸Â
 
 **Detect scope creep. Price it fairly. Get a clear decision before doing extra work.**
 
@@ -54,11 +54,11 @@ Gemma's open weights enable local analysis; a freelancer can keep sensitive raw 
 
 ## Architecture
 
-`Browser → FastAPI → local Ollama/Gemma (only for analysis)`
+`Browser Ã¢â€ â€™ FastAPI Ã¢â€ â€™ local Ollama/Gemma (only for analysis)`
 
-`Browser → FastAPI → SQLite (proposals, approval states)`
+`Browser Ã¢â€ â€™ FastAPI Ã¢â€ â€™ SQLite (proposals, approval states)`
 
-`Browser → FastAPI → ReportLab (PDF export)`
+`Browser Ã¢â€ â€™ FastAPI Ã¢â€ â€™ ReportLab (PDF export)`
 
 ## Amazon Leadership Principles as engineering inspiration
 
@@ -92,11 +92,11 @@ This is a **hackathon MVP, not a production multi-tenant SaaS**.
 
 ## Sample DEV article structure
 
-See [`DEV_SUBMISSION_DRAFT.md`](DEV_SUBMISSION_DRAFT.md). Fill in demonstration links and measured results rather than inventing them.
+See `DEV_SUBMISSION_DRAFT.md`. Fill in demonstration links and measured results rather than inventing them.
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE).
+MIT Ã¢â‚¬â€ see [`LICENSE`](LICENSE).
 
 ## 1.1 evidence correction and existing saved approvals
 
@@ -109,7 +109,7 @@ On Windows the startup script now chooses the first free port between 8001 and 8
 
 ## v1.2 Billing Safety Patch
 
-See [FIX_NOTES_v1.2.md](FIX_NOTES_v1.2.md) for upgrade instructions, safeguards, and limitations. New proposals require a recorded analysis ID and verified out-of-scope items; included work is not available for extra-charge proposals.
+See FIX_NOTES_v1.2.md for upgrade instructions, safeguards, and limitations. New proposals require a recorded analysis ID and verified out-of-scope items; included work is not available for extra-charge proposals.
 
 ## October 2026: Competition upgrade (v1.3)
 
@@ -136,6 +136,6 @@ For competition claims and Windows instructions, read `UPGRADE_GUIDE.md`.
 
 ## ScopeGuard v2 additions (October 2026)
 
-**Agreement Vault** stores local project-level agreement versions with SHA-256 hashes and source-line labels. **Scope Inbox** stores incoming message text pasted by the freelancer under a project for repeat analysis. **Client-ready Reply Drafts** produce editable templates for a proposal or clarification, without sending any email. A new local workspace API lives in `backend/workspace.py` and its browser companion lives in `frontend/workspace.js`. See [`START_HERE.md`](START_HERE.md) for full instructions and security limitations and [`PR_WORKFLOW.md`](PR_WORKFLOW.md) for GitHub review/merge steps.
+**Agreement Vault** stores local project-level agreement versions with SHA-256 hashes and source-line labels. **Scope Inbox** stores incoming message text pasted by the freelancer under a project for repeat analysis. **Client-ready Reply Drafts** produce editable templates for a proposal or clarification, without sending any email. A new local workspace API lives in `backend/workspace.py` and its browser companion lives in `frontend/workspace.js`. See [`START_HERE.md`](docs/setup/START_HERE.md) for full instructions and security limitations and `PR_WORKFLOW.md` for GitHub review/merge steps.
 
 **Security:** These local workspace routes do not implement authentication. They must not be deployed as an Internet-accessible customer application in the current state. Use fictional/sanitized data. This demo is not a digital signing or payment service.
