@@ -336,3 +336,15 @@ def graph_page():
 @app.get('/graph.js')
 def graph_script():
     return FileResponse(ROOT / 'frontend' / 'graph.js', media_type='application/javascript')
+
+# ScopeGuard Atlas: version-bound graph exception preview.
+from backend.atlas import router as atlas_router
+app.include_router(atlas_router)
+
+@app.get("/atlas.html")
+def atlas_page():
+    return FileResponse(ROOT / "frontend" / "atlas.html")
+
+@app.get("/atlas.js")
+def atlas_script():
+    return FileResponse(ROOT / "frontend" / "atlas.js", media_type="application/javascript")
