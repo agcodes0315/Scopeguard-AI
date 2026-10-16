@@ -1,141 +1,309 @@
-# ScopeGuard AI Ã°Å¸â€ºÂ¡Ã¯Â¸Â
+# 🛡️ ScopeGuard AI
 
-**Detect scope creep. Price it fairly. Get a clear decision before doing extra work.**
+### From a client’s “one small change” to an evidence-backed decision.
 
-A local-first freelancer and client change-approval workflow powered by the open-weight **Gemma 3 4B** model through Ollama. Built as a new Hacktoberfest 2026 Week 2: Side Hustle project.
+**A local-first scope-change and client-approval assistant for freelance web developers, powered by Gemma 3 4B and FalkorDB.**
 
-## Who it's for
+[![Live showcase](https://img.shields.io/badge/Live_Showcase-Render-46cbb9?style=for-the-badge)](https://scopeguard-ai-508d.onrender.com/) [![Source code](https://img.shields.io/badge/GitHub-Source_Code-181717?style=for-the-badge&logo=github)](https://github.com/agcodes0315/Scopeguard-AI) [![Tests](https://img.shields.io/badge/Local_Tests-62_Passing-279b65?style=for-the-badge)](#testing-and-evaluation) [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-Freelance developers, designers, creative studios, and their clients. A five-page website becomes seven pages and three rounds of revisions, but the agreement only covered five pages and two rounds. ScopeGuard identifies potential scope changes, asks the freelancer to set estimates, and lets the client approve or reject the proposal.
+> **Live-site clarification:** The Render link is a public *showcase*, not a publicly hosted Gemma/FalkorDB application. The full working prototype runs locally. Do not upload real customer contracts to a publicly accessible unauthenticated instance.
 
-## Features implemented
+## The problem: a small change can become an expensive disagreement
 
-- Local Gemma-powered agreement vs. request comparison
-- Topic-matched exact request excerpts, conservative evidence rejection, and needs-review fallback
-- Human-entered hours and rates; deterministic money calculations
-- Tokenized customer review link (approve / reject / request clarification)
-- Persisted decisions in SQLite; one final decision per proposal
-- Downloadable proposal PDF (not a tax invoice)
-- Export model findings as JSON
-- FastAPI API with validation, pytest checks, and GitHub Actions CI
-- Simple standalone frontend (no Node installation required)
+A freelancer sells a five-page website for a fixed price. The agreement includes Home, About, Services, Portfolio and Contact, plus two revision rounds. After work begins, the client messages: **“Please add a Testimonials page.”** Soon there is a request for a third revision or a checkout system.
 
-## Windows setup (PowerShell in VS Code)
+The difficulty is not simply building another page. It is answering five questions quickly, fairly and with evidence:
 
-1. Install the latest [Ollama](https://ollama.com/download) and Python 3.11+.
-2. Download the model:
+1. What did the original agreement promise?
+2. Has this exact change already been discussed or waived?
+3. Is the new request included, potentially additional, or too ambiguous to judge?
+4. What would an appropriate *human-estimated* change proposal look like?
+5. Did the customer explicitly accept the proposed change?
 
-```powershell
-ollama pull gemma3:4b
+Without a connected record, the freelancer searches chat threads, rereads the agreement, drafts an uncomfortable pricing message and risks performing unapproved work. Clients can also be surprised by charges they never reviewed. **ScopeGuard helps both parties reach a documented decision before extra work starts.**
+
+### Evidence that the problem is real
+
+- Project Management Institute's *Pulse of the Profession 2024* reports an **average scope-creep rate of 30%** in its 2023 survey data (versus 23% among its highest-performing quartile and 37% among its lowest-performing quartile). This is broad **project-management evidence**, not a measured freelancer-specific prevalence rate. [PMI report](https://www.pmi.org/-/media/pmi/documents/public/pdf/learning/thought-leadership/pmi-pulse-of-the-profession-2024-report.pdf).
+- PMI's *Scope Patrol* article reported that its **2018** research found scope creep or uncontrolled scope changes in **52% of projects**, up from 43% five years earlier. This is historical context, not a current 2026 estimate. [PMI article](https://www.pmi.org/learning/library/scope-creep-rising-11308).
+- A 2026 survey of **1,060** freelancers and self-employed workers by The Accountancy Partnership reported that **10.9%** selected late/non-payment as the biggest threat in their industry. Payment problems and unapproved scope work are related concerns, **not identical outcomes**. [Industry Frustration Report](https://www.theaccountancy.co.uk/business-news/the-industry-frustration-report-335854.html).
+
+**Research gap:** We have not yet measured how many *freelance website projects* experience charge disputes or what fraction ScopeGuard could prevent. That requires direct customer interviews and a documented pilot.
+
+## Who we build for
+
+| | Primary persona | Secondary persona |
+|---|---|---|
+| **User** | Solo web developer or small creative agency | Small-business owner commissioning a website |
+| **Typical context** | Fixed-scope projects, scattered client messages, limited administrative time | Limited technical vocabulary, wants predictable cost and delivery |
+| **Job to be done** | Respond to a new request with evidence and an appropriate next step | Understand exactly what they are approving or questioning |
+| **Main frustration** | Re-reading agreements, awkward pricing conversations, lost decision history | Unexpected charges or unclear scope boundaries |
+| **Desired outcome** | A reviewed, usable response and recorded decision | Clear proposal and explicit approve / reject / clarify options |
+
+**Initial niche:** Independent website developers delivering five-to-ten-page business websites. This is intentionally narrower than “all freelancers”; it makes contracts, revision policies and change types easier to evaluate and demo.
+
+## What the product does
+
+**In one sentence:** Paste the agreement and the client's request; ScopeGuard identifies the relevant terms, offers conservative AI guidance, lets the freelancer control pricing, and records a customer decision.
+
+### End-to-end customer journey
+
+| Step | User action | Product response | Friction removed |
+|---|---|---|---|
+| 1. Establish scope | Paste or upload a PDF, DOCX or TXT agreement; optionally save a version in Agreement Vault | Agreement text is extracted for review; versions can be saved locally | Repeated searching for the current agreement |
+| 2. Capture request | Paste the message or load it from Scope Inbox | Client request is available for analysis | Copying context between scattered tools |
+| 3. Understand change | Select **Analyze scope with Gemma** | `included`, `potential_extra`, or `needs_review`, with agreement/request evidence | First-pass interpretation and drafting effort |
+| 4. Review fairly | Inspect evidence; enter **your own** hours and hourly rate only for eligible extra items | Deterministic amount calculation; no AI-generated rate | Hidden or invented pricing |
+| 5. Seek consent | Create an approval proposal; open the bearer-token customer link in the local demo | Client can approve, reject or request clarification; PDF proposal available | Verbal approval without a clear decision record |
+| 6. Reuse context | In the Atlas graph workspace, confirm a human-reviewed classification and ask the same request again | FalkorDB retrieves the prior confirmed decision for the same normalized request and agreement version | Repeating old investigations and losing institutional memory |
+
+**Safety boundary:** Analysis and graph memory do not constitute customer approval, legal advice or authorization to invoice. New/ambiguous requests require human judgment.
+
+## Two complementary workflows, one project
+
+### A. ScopeGuard — agreement to client approval
+
+- **Agreement Vault:** versioned local project agreements with hashes and source labels.
+- **Scope Inbox:** manually captured client messages per local project.
+- **Gemma analyzer:** evidence-aware classification and conservative fallback to review.
+- **Proposal builder:** freelancer-controlled hours/rates; deterministic totals.
+- **Customer response:** approve, reject or request clarification; one final proposal decision.
+- **Exports:** JSON findings, editable client reply drafts and proposal PDF.
+
+### B. ScopeGuard Atlas — decisions with graph context
+
+- **FalkorDB** stores connected projects, agreement versions, clauses, requests and reviewer decisions.
+- The agent fetches the **active agreement** and related clauses from the graph before interpreting a new request.
+- A **human-confirmed decision** is reused only for a matching normalized request against the same agreement version; other requests return to analysis/review.
+- Graph results expose an **evidence path**, including which agreement and prior decision informed the response.
+- The graph endpoints intentionally return an error when FalkorDB is unavailable; they do **not** silently fall back to an unrelated store.
+
+This is **scoped decision memory**, not an autonomous multi-agent planning system or a general-purpose knowledge graph.
+
+## Why FalkorDB actually matters
+
+A standard text classifier sees an isolated message. Atlas adds relationships and history:
+
+```text
+(Project)-[:HAS_AGREEMENT]->(Agreement)-[:CONTAINS]->(Clause)
+    |                              ^
+    +--[:RECEIVED]-->(Request)-[:BASED_ON]--+
+                            |
+                            +--[:HAS_DECISION]->(Decision)
+
+(Agreement)-[:HAS_EXCEPTION]->(Exception)
+(Project)-[:RECORDED_EXCEPTION]->(Exception)
 ```
 
-3. Open this folder in VS Code and run:
+The extension includes recorded exceptions, with their agreement version and customer-approval status. A reviewer-recorded waiver alone does **not** establish customer consent.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\start.ps1
+**Actual Cypher used to select the current agreement** (from `backend/graph_context.py`):
+
+```cypher
+MATCH (p:Project {id:$pid})-[:HAS_AGREEMENT]->(a:Agreement)
+RETURN a.id, a.body, a.version
+ORDER BY a.version DESC LIMIT 1
 ```
 
-4. Visit **the URL printed in your terminal (normally http://127.0.0.1:8001)**, choose **Load demo example**, then **Analyze scope with Gemma**.
-5. Enter hourly rate and nonzero estimated hours, choose **Create customer approval proposal**, and open the generated link in another browser tab. Make a decision as the customer; download the proposal PDF.
+**Actual Cypher used to find relevant human-reviewed history:**
 
-If `py` is not installed, use `python -m venv .venv` manually.
-
-## Tests
-
-```powershell
-.\.venv\Scripts\python.exe -m pytest -q
+```cypher
+MATCH (p:Project {id:$pid})-[:HAS_AGREEMENT]->(a:Agreement {id:$aid})
+      <-[:BASED_ON]-(r:Request)-[:HAS_DECISION]->(d:Decision)
+RETURN r.id,r.text,d.classification,d.reviewer_note,d.status
 ```
 
-Tests do not call Ollama and validate proposal creation, pricing, PDF generation, immutability of decisions, and invalid prices.
+**Actual Cypher used by Atlas to inspect agreement exceptions** (see `docs/ATLAS_GRAPH_MODEL.md`):
 
-## How open innovation is essential
+```cypher
+MATCH (p:Project {id:$pid})-[:HAS_AGREEMENT]->(a:Agreement)-[:HAS_EXCEPTION]->(e:Exception)
+RETURN a.id,a.version,e.id,e.request_text,e.request_hash,e.effect,e.reason,e.customer_approved,e.status
+ORDER BY a.version DESC
+```
 
-Gemma's open weights enable local analysis; a freelancer can keep sensitive raw agreements on their own machine when Ollama runs locally. The extraction model can be swapped without changing pricing rules. This is a powerful alternative to mandatory per-document closed API calls. **It does not mean the app is end-to-end encrypted or production-secure.**
+Queries are parameterized; the full executable code is in [`backend/graph_context.py`](backend/graph_context.py) and [`backend/atlas.py`](backend/atlas.py). See [graph model documentation](docs/ATLAS_GRAPH_MODEL.md).
+
+### Falsifiable graph demonstration
+
+1. Create a **synthetic** website agreement with five pages and two revision rounds.
+2. Analyze: `Please add a Testimonials page to the website.`
+3. Inspect the graph-based agreement/evidence path.
+4. Confirm a human-reviewed classification and note; **do not mark it as customer-approved without an independent approval record**.
+5. Analyze the **identical** request again. The source can now be `graph_memory`, referencing the previous reviewed decision.
+6. Change the request to `Please add an online store with checkout and payments.` The Testimonials decision must **not** be blindly applied.
+7. Stop FalkorDB and retry a graph operation: the graph-dependent endpoint should fail closed rather than pretend history is available.
+
+That last step distinguishes an essential context layer from a decorative visualization.
 
 ## Architecture
 
-`Browser Ã¢â€ â€™ FastAPI Ã¢â€ â€™ local Ollama/Gemma (only for analysis)`
+```text
+Browser: vanilla HTML / CSS / JavaScript
+    |
+    v
+FastAPI application (validation and workflow safety)
+    |-------------------------> Ollama -> Gemma 3 4B (analysis only)
+    |-------------------------> SQLite (local projects/proposals/decisions)
+    |-------------------------> ReportLab (proposal PDF)
+    |
+    +---- Atlas graph endpoints -> FalkorDB
+                                   Project / Agreement / Clause /
+                                   Request / Decision / Exception
 
-`Browser Ã¢â€ â€™ FastAPI Ã¢â€ â€™ SQLite (proposals, approval states)`
+Render Static Site -> public documentation/showcase only
+```
 
-`Browser Ã¢â€ â€™ FastAPI Ã¢â€ â€™ ReportLab (PDF export)`
+**Design choices:** A local model makes inference possible without sending agreement text to a proprietary inference API. The deterministic proposal engine avoids AI pricing hallucinations. FalkorDB persists connections across sessions in the graph-enabled workflow. Human approval gates reduce the risk of treating a recommendation as a commitment.
 
-## Amazon Leadership Principles as engineering inspiration
+## Run locally (Windows / VS Code)
 
-- **Customer Obsession:** Client and freelancer interfaces, fair pricing transparency.
-- **Ownership:** Complete input-to-approval workflow.
-- **Invent and Simplify:** Convert document language into scoped changes.
-- **Highest Standards / Earn Trust:** Exact quotation checks, manual estimates, immutable final decisions.
-- **Dive Deep:** Structured output validation, failure-mode testing.
-- **Bias for Action / Deliver Results:** Small deployable MVP and demo-first workflow.
-- **Frugality:** Local model, SQLite, no compulsory hosted API billing.
-
-## Security and scaling limitations (important)
-
-This is a **hackathon MVP, not a production multi-tenant SaaS**.
-
-- Share tokens are bearer credentials: whoever gets the link can see and decide on the proposal. Use demo/synthetic agreements only. No authentication, role-based access control, or protected identity verification exists yet.
-- SQLite is appropriate for local single-instance prototyping, not horizontally scaled deployments with ephemeral disks.
-- For production, introduce authenticated accounts, expiring invitation links, role-based permissions, CSRF/rate limiting, encrypted storage, audit logs, consent, retention/deletion controls, and PostgreSQL with migrations.
-- Avoid external deployment of private agreements until all these safeguards exist. A hosted FastAPI container **does not automatically include an Ollama model**. Configure an actual reachable Ollama service before enabling live hosted inference.
-- Model classifications are advisory; excerpt checks only prove text inclusion, not semantic correctness. A human must review any outcome. No legal determination or automatic billing.
-- Customer approval records are workflow signals, not enforceable signatures or evidence of payment.
-- The PDF is a *proposal*, not a compliant tax invoice.
-
-## Next steps before contest submission
-
-- Evaluate with 20+ labeled synthetic cases and publish precision, recall, failure examples, and local latency.
-- Add upload/extraction for common document types.
-- Host a safe sandbox demo with *synthetic* data; do not claim live model inference unless a model runtime is actually connected.
-- Run a genuine first-user test, obtain permission before quoting feedback.
-- Add Sentry tracing only if properly redacted and configured; claim partner categories only for meaningful implemented uses.
-
-## Sample DEV article structure
-
-See `DEV_SUBMISSION_DRAFT.md`. Fill in demonstration links and measured results rather than inventing them.
-
-## License
-
-MIT Ã¢â‚¬â€ see [`LICENSE`](LICENSE).
-
-## 1.1 evidence correction and existing saved approvals
-
-Previous versions allowed an exact quote for one change to appear as the supporting evidence for another (e.g. Careers page citing a third revision). Version 1.1 checks both quotation inclusion and whether the quote contains terms identifying the specific change. It may still reject valid indirect evidence, so review is always necessary.
-
-**Previously generated proposals and PDFs are snapshots and do not update automatically.** To show corrected excerpts, re-run analysis, create a *new* proposal, and approve it again for the demo. Never rewrite historical approvals. The database lives under `data/scopeguard.db` in each project directory; back it up before changing installations.
-
-On Windows the startup script now chooses the first free port between 8001 and 8005 rather than colliding with 8000. Use the exact URL printed in the terminal.
-
-
-## v1.2 Billing Safety Patch
-
-See FIX_NOTES_v1.2.md for upgrade instructions, safeguards, and limitations. New proposals require a recorded analysis ID and verified out-of-scope items; included work is not available for extra-charge proposals.
-
-## October 2026: Competition upgrade (v1.3)
-
-Upload selectable-text PDF, DOCX or UTF-8 TXT agreements directly in the left-hand agreement panel (up to 3 MB; max 25 PDF pages). Uploaded bytes are parsed in memory, and extracted text appears in the agreement textbox for review. The text is submitted only when the user clicks Analyze; the API does not retain uploaded files. This is not OCR.
-
-Safety: `included` and `needs_review` items are excluded from automatic change proposals, and the backend independently checks analyzed classifications and evidence. This does not replace contract review, and the demo share-link design must not be exposed publicly without identity and access controls.
-
-### Verify
+**Requirements:** Python 3.11+, Docker Desktop (for FalkorDB), [Ollama](https://ollama.com/download), enough memory/disk to run `gemma3:4b`.
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\start.ps1
-# Separate VS Code terminal:
+# Clone
+ git clone https://github.com/agcodes0315/Scopeguard-AI.git
+ cd Scopeguard-AI
+
+# Python environment
+ py -3.12 -m venv .venv
+ .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+# Download model (only needed once)
+ ollama pull gemma3:4b
+
+# Start graph storage
+ docker compose -f compose.graph.yml up -d
+
+# Start app; follow the URL printed by the script
+ powershell -ExecutionPolicy Bypass -File .\start.ps1
+```
+
+If Python 3.12 is unavailable, use `py -3 -m venv .venv`. Ollama must be running; Docker must be running for graph features.
+
+Open the URL printed by `start.ps1` (typically `http://127.0.0.1:8001`; the port may differ). Try the original ScopeGuard UI, then `/graph.html` and `/atlas.html` on **that same local port**. Check `http://127.0.0.1:8001/api/graph/health` only if the application is actually on port 8001.
+
+For additional setup details, see [`docs/setup/START_HERE.md`](docs/setup/START_HERE.md) and [`docs/DEPLOYMENT_GUIDE.md`](docs/DEPLOYMENT_GUIDE.md).
+
+### Health check and tests
+
+```powershell
 .\.venv\Scripts\python.exe -m pytest -q
-# Use the actual port printed by start.ps1:
-$env:SCOPEGUARD_URL='http://127.0.0.1:8001'
+
+docker compose -f compose.graph.yml ps
+ollama list
+```
+
+**Last user-reported local verification (October 2026):** `62 passed, 1 warning`. Docker showed a running FalkorDB container, and `ollama list` included `gemma3:4b`. The warning concerned Starlette's deprecated TestClient dependency; it did not fail that test run. This does **not** mean 62 live-model or end-to-end browser tests were performed.
+
+### Optional live Gemma scenario evaluation
+
+Start the FastAPI app first; then set `SCOPEGUARD_URL` to the **actual printed port** and run:
+
+```powershell
+$env:SCOPEGUARD_URL = 'http://127.0.0.1:8001'
 .\.venv\Scripts\python.exe evaluation\run_evaluation.py
 ```
 
-This repository contains 24 human-labeled examples. Their existence is **not** an accuracy score; run the optional evaluator against your local Gemma model and review results.
+The repository contains **24 human-labeled synthetic scenarios**. The scenario pass rate can vary with model behavior and versions; report the actual `evaluation/results.json` output from the run. **Scenario success is not a statistically representative accuracy, precision or recall measure.**
 
-For competition claims and Windows instructions, read `UPGRADE_GUIDE.md`.
+## Evaluation, impact and product decisions
 
----
+### What is verified and what is not
 
-## ScopeGuard v2 additions (October 2026)
+| Metric | Current evidence | Interpretation |
+|---|---|---|
+| Automated regression tests | **62 passed** in a reported local `.venv` run | Functional and safety checks pass in that environment |
+| Synthetic scenarios | **24 labeled cases** available | Reproducible evaluation inputs, not 24 real users |
+| Cross-session graph memory | Demonstrated with `graph_memory` and graph evidence paths | Qualitative demo, not a large-scale benchmark |
+| Client approval | Synthetic ₹4,000 proposal and approval demonstrated | Fictional workflow, not recovered revenue |
+| Public deployment | Render static showcase live | Not full-cloud Gemma inference or client-facing SaaS |
+| First paying user / willingness to pay | **Not yet validated** | Open commercial hypothesis |
+| Median time to usable reviewed reply | **Not yet measured** | Primary benchmark still needed |
 
-**Agreement Vault** stores local project-level agreement versions with SHA-256 hashes and source-line labels. **Scope Inbox** stores incoming message text pasted by the freelancer under a project for repeat analysis. **Client-ready Reply Drafts** produce editable templates for a proposal or clarification, without sending any email. A new local workspace API lives in `backend/workspace.py` and its browser companion lives in `frontend/workspace.js`. See [`START_HERE.md`](docs/setup/START_HERE.md) for full instructions and security limitations and `PR_WORKFLOW.md` for GitHub review/merge steps.
+### North-star metric
 
-**Security:** These local workspace routes do not implement authentication. They must not be deployed as an Internet-accessible customer application in the current state. Use fictional/sanitized data. This demo is not a digital signing or payment service.
+**Time from receiving a client request to a reviewed, usable client response.**
+
+Supporting metrics: agreement-evidence validity, false billable-flag rate, human-edit distance to a usable reply, approval completion rate, and users willing to repeat the workflow.
+
+**Target (not measured):** a reviewed, usable first draft in **under two minutes**, excluding initial model installation and agreement onboarding. Track median and P90 across repeated trials.
+
+### Example cost of the problem — illustrative, not observed savings
+
+If a freelancer spends **30 minutes** reconciling and responding to a scope dispute, values their time at **₹1,000/hour**, and handles **eight such requests/month**, the administrative opportunity cost is:
+
+`0.5 hours × ₹1,000 × 8 = ₹4,000/month`.
+
+This is an **assumption-based example**, not market size, revenue lost, or an amount ScopeGuard has demonstrated it can save. A measured before/after pilot is required to make real savings claims.
+
+### Positioning and potential business model
+
+**Sector:** freelance professional services / creative-agency operations, with a niche in website-development change control. **Alternatives:** manual email, chat searches, spreadsheets, contract templates and general-purpose AI drafting. ScopeGuard's **proposed** differentiator is the combination of local open-weight analysis, evidence-bound decisions, human-entered pricing, customer approval and exact-match version-aware graph memory in a single flow.
+
+**Revenue hypothesis (unvalidated):** local open-source core with optional paid hosted convenience, team collaboration or managed onboarding. No paying-user, retention or pricing experiment has yet established demand.
+
+## Before vs after: the honest claim
+
+| Step | Without a dedicated workflow | With ScopeGuard (demonstrated capability) |
+|---|---|---|
+| Find agreement context | Search files/chat manually | Paste/load current agreement and stored versions |
+| Interpret the request | Manual clause comparison | Gemma analysis with cited excerpts and `needs_review` fallback |
+| Explain price | Draft a calculation manually | Freelancer enters hours/rate; amount is computed |
+| Obtain decision | Informal chat reply | Explicit approve/reject/clarify customer view |
+| Remember last exception | Search old messages | Version-aware, human-reviewed graph memory |
+
+**Do not claim “13 hours → 3 hours” or “₹20,000 → ₹3,000” until identical tasks have been benchmarked.** A clear before/after screen recording and a timed pilot are next steps.
+
+## Privacy, safety and limitations
+
+This is a **hackathon MVP, not a production-secure multi-tenant service**.
+
+- Use synthetic, public or permissioned demo material; never upload sensitive private contracts to an unauthenticated public demo.
+- The public Render deployment is a static showcase. It does not run Ollama/Gemma or the graph API.
+- Customer review links act as bearer tokens: anyone with the token can access the proposal. They are not verified identities or legally binding e-signatures.
+- Local-first does not imply end-to-end encryption, access controls, or compliance certification.
+- AI output is advisory. Exact quote matching does not establish that the legal interpretation is correct. `needs_review` and `included` should not be silently billed.
+- The PDF is a **proposal**, not a tax invoice. Client approval is not payment.
+- SQLite and the current unauthenticated API are not suitable for an Internet-facing multi-tenant rollout.
+- FalkorDB graph memory uses conservative exact normalized matching; paraphrase-aware reuse, tenant isolation and consent verification need further engineering.
+- In production, add authentication, authorization, tenant separation, expiring scoped links, audit logging, secure data deletion, rate limiting, durable storage, actual deployed model infrastructure and security testing.
+
+## Product roadmap
+
+**Before judging/submission:**
+
+1. Publish a short working demo showing **first graph lookup → human confirmation → `graph_memory` reuse → unrelated request not reused**.
+2. Publish the real scenario evaluation output, including failed cases and inference latency on the test machine.
+3. Conduct 3–5 permitted user interviews and one timed usability session; quote feedback only with permission.
+4. Link the demo from both the GitHub README and Render showcase.
+5. Document meaningful original work completed within each contest's eligible window. Do **not** reset commit dates or misrepresent an existing project as newly created.
+
+**After the hackathon:** improve graph versioning UI, smarter-but-safe evidence retrieval, project onboarding, secure identity/approval, model performance and a proper hosted architecture.
+
+## Hackathon context and transparency
+
+**Graph Hacks — FalkorDB:** The graph-supported Atlas workflow is the relevant entry: FalkorDB is a required runtime dependency for graph decisions, and history influences later analysis. The strongest proposed track is **Agents That Act on Connected Data**; memory is also relevant, but this prototype does not yet demonstrate multiple cooperating agents.
+
+**Hacktoberfest 2026, Week 2 — Side Hustle:** The local Gemma workflow fits the business/theme concept. However, Week 2 official rules require a **brand-new project built during the contest entry period**. This repository contains earlier development history, so acceptance/eligibility for the same existing project must **not be assumed**. Newly pushed commits do not change when original work was created. [Official Week 2 rules](https://dev.to/page/hacktoberfest-week2-2026-10-12-contest-rules).
+
+AI coding assistance was used during development; the contributor must review, test, understand and accurately disclose AI-assisted work as required by contest rules.
+
+## Documentation
+
+| Resource | Path |
+|---|---|
+| Graph data model and Cypher | [`docs/ATLAS_GRAPH_MODEL.md`](docs/ATLAS_GRAPH_MODEL.md) |
+| Graph Hacks overview | [`docs/GRAPH_HACKS_README.md`](docs/GRAPH_HACKS_README.md) |
+| Product pitch and metrics | [`docs/PITCH_AND_METRICS.md`](docs/PITCH_AND_METRICS.md) |
+| Deployment notes | [`docs/DEPLOYMENT_GUIDE.md`](docs/DEPLOYMENT_GUIDE.md) |
+| Windows/local getting started | [`docs/setup/START_HERE.md`](docs/setup/START_HERE.md) |
+| DEV article draft | [`docs/DEV_SUBMISSION_DRAFT.md`](docs/DEV_SUBMISSION_DRAFT.md) |
+| Graph context backend | [`backend/graph_context.py`](backend/graph_context.py) |
+| Atlas decision backend | [`backend/atlas.py`](backend/atlas.py) |
+| Evaluation scenarios | [`evaluation/`](evaluation/) |
+
+## Open source and author
+
+**MIT License** — see [`LICENSE`](LICENSE). Source and issue tracker: [agcodes0315/Scopeguard-AI](https://github.com/agcodes0315/Scopeguard-AI).
+
+Built as a practical investigation into a simple principle: **an AI recommendation should lead to a transparent human decision, and the next decision should remember the evidence behind the last one.**
