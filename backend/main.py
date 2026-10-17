@@ -348,3 +348,7 @@ def atlas_page():
 @app.get("/atlas.js")
 def atlas_script():
     return FileResponse(ROOT / "frontend" / "atlas.js", media_type="application/javascript")
+
+# Read graph-backed history before selecting an advisory next action.
+from backend import atlas_action
+app.include_router(atlas_action.router)

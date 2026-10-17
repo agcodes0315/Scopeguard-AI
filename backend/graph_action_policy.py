@@ -1,10 +1,10 @@
-from typing import Any, Mapping
 """Conservative, deterministic next-action policy for an Atlas graph preview.
 
 This is an integration component, NOT a graph query, AI inference, or payment service.
 The caller must obtain a trusted preview from FalkorDB and a separately validated
 classification. Never treats a saved exception as proof of customer consent.
 """
+from typing import Any, Mapping
 
 
 def choose_next_action(graph_preview: Mapping[str, Any], classification: str, *,
@@ -36,7 +36,7 @@ def choose_next_action(graph_preview: Mapping[str, Any], classification: str, *,
     }
     if state in {'conflict', 'stale', 'stale_exception', 'agreement_changed'} or stale:
         result['reason'] = 'Conflicting or out-of-date graph history; request fresh human review.'
-    elif state in {'applicable_customer_approved_exception', 'applicable_exception', 'matching_exception'}:
+    elif state in {'applicable_customer_approved_exception', 'applicable_exception', 'matching_exception', 'reviewer_confirmed_only', 'matching_prior_graph_decision'}:
         result['action'] = 'verify_existing_exception'
         result['reason'] = 'Matching agreement-bound graph decision found; confirm scope and consent independently.'
     elif state in {'no_applicable_exception', 'no_match', 'new_request'}:

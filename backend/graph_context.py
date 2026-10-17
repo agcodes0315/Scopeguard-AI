@@ -110,6 +110,7 @@ def analyze_project(payload: GraphAnalyze, graph=None, analyzer=None):
         CREATE (p)-[:RECEIVED]->(r)
         CREATE (r)-[:BASED_ON]->(a)''',
         {'pid':payload.project_id,'aid':aid,'rid':request_id,'text':payload.request,'hash':_key(payload.request)})
+    verified_evidence = False
     if remembered:
         category, explanation = remembered, memo
         source = 'graph_memory'
@@ -123,6 +124,16 @@ def analyze_project(payload: GraphAnalyze, graph=None, analyzer=None):
             analyzer = lambda a, r: analyze(AnalyzeRequest(agreement=a, requests=r))
         result = analyzer(agreement, payload.request)
         items = result.items
+        # Exact text checks are a prerequisite, NOT proof of semantic correctness.
+        verified_evidence = (
+            len(items) == 1 and
+            items[0].classification == 'potential_extra' and
+            bool(items[0].agreement_evidence) and
+            bool(getattr(items[0], 'request_evidence', '')) and
+            str(items[0].agreement_evidence) in str(agreement) and
+            str(items[0].request_evidence) in str(payload.request) and
+            any(str(items[0].agreement_evidence) in str(row[1]) for row in clauses)
+        )
         category = items[0].classification if len(items)==1 else 'needs_review'
         explanation = items[0].reasoning if len(items)==1 else 'Multiple findings: manual review required.'
         source = 'graph_agreement_plus_gemma'
@@ -138,6 +149,7 @@ def analyze_project(payload: GraphAnalyze, graph=None, analyzer=None):
     return {'project_id':payload.project_id,'request_id':request_id,'agreement_id':aid,
             'classification':category,'source':source,'reasoning':explanation,
             'evidence_path':evidence,'prior_decisions_considered':len(previous),
+            'verified_evidence':verified_evidence,
             'requires_human_confirmation':True,
             'disclaimer':'Advisory only; no pricing, invoice, or client approval is performed.'}
 
