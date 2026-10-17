@@ -4,7 +4,7 @@ Every decision remains advisory. This extension never creates an invoice or
 claims that freelancer confirmation is equivalent to customer consent.
 Graph storage is mandatory; no fallback to SQLite is implemented.
 '''
-from __future__ import annotation
+from __future__ import annotations
 
 import hashlib
 import secrets
