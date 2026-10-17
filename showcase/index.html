@@ -1,15 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="ScopeGuard AI helps freelance developers handle scope changes through agreement evidence, human-reviewed decisions, and FalkorDB memory.">
-  <meta name="theme-color" content="#0b1416">
-  <title>ScopeGuard AI | Evidence before extra work</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="ScopeGuard AI helps freelance developers handle scope changes through agreement evidence, human-reviewed decisions, and FalkorDB memory." name="description"/>
+<meta content="#0b1416" name="theme-color"/>
+<title>ScopeGuard AI | Evidence before extra work</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<style>
     :root {
       color-scheme: dark;
       --bg:#0b1416; --surface:#101f22; --surface-2:#14272a; --raised:#192f31;
@@ -90,57 +91,66 @@
     @media(max-width:760px){.shell{display:block}.sidebar{height:auto;position:static;padding:13px 15px;gap:10px}.identity{padding:4px}.side-caption,.sidebar-bottom{display:none}.side-nav{display:flex;overflow-x:auto;gap:5px}.side-nav a{white-space:nowrap;padding:10px}.main{padding:24px 16px 40px}.chart-area{grid-template-columns:1fr;justify-items:start}}
     @media(max-width:480px){.stats{grid-template-columns:1fr 1fr;gap:9px}.stat{padding:15px 12px}.stat .stat-v{font-size:18px}.panel{padding:18px}.calculator{grid-template-columns:1fr}.topline{margin-bottom:22px}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
-  </style>
+
+    /* Single-view navigation: each sidebar item opens its own product screen. */
+    .page-view[hidden] {display:none !important}
+    .page-view {animation:view-enter .19s ease-out}
+    .view-header {margin-bottom:25px}
+    .view-header h1 {font-size:clamp(29px,3.4vw,42px);letter-spacing:-1.1px}
+    .view-header p:not(.page-eyebrow) {color:var(--muted);max-width:810px;font-size:14px}
+    .view-header .page-eyebrow {margin-bottom:8px}
+    .view-grid {display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.75fr);gap:18px}
+    .view-grid > .panel {margin-bottom:0}
+    .screen-note {border:1px solid var(--edge);border-radius:14px;padding:16px 18px;background:#14292a;color:#bfcec5;font-size:13px;line-height:1.7;margin-bottom:20px}
+    .screen-note strong{color:var(--text)}
+    @keyframes view-enter{from{opacity:.3;transform:translateY(5px)}to{opacity:1;transform:none}}
+    @media(max-width:880px){.view-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.page-view{animation:none}}
+</style>
 </head>
 <body>
 <div class="shell">
-  <aside class="sidebar" aria-label="Site navigation">
-    <a class="identity" href="#overview" aria-label="ScopeGuard AI home"><div class="mark">S</div><div><strong>ScopeGuard <span style="color:var(--sage)">AI</span></strong><small>Scope intelligence workspace</small></div></a>
-    <div><div class="side-caption">Explore</div><nav class="side-nav">
-      <a class="active" href="#overview"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="5" rx="1"/><rect x="13" y="10" width="8" height="11" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/></svg>Overview</a>
-      <a href="#workflow"><svg viewBox="0 0 24 24"><path d="M5 5h14M5 12h14M5 19h14"/><circle cx="5" cy="5" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="5" cy="19" r="2"/></svg>Workflow</a>
-      <a href="#decision-memory"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><path d="m8 11 8-5m-8 7 8 5"/></svg>Decision memory</a>
-      <a href="#example-requests"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h8"/></svg>Example requests</a>
-      <a href="#proposal"><svg viewBox="0 0 24 24"><path d="M7 3h9l4 4v14H7zM16 3v5h4M10 12h7M10 16h7"/></svg>Proposal estimate</a>
-      <a href="#get-started"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM9 12h6m-3-3v6"/></svg>Run locally</a>
-    </nav></div>
-    <div class="sidebar-bottom"><div><span class="online-dot"></span>Public product showcase</div><div style="margin-top:8px">The hosted page does not run private AI or graph services.</div></div>
-  </aside>
-  <main class="main" id="overview">
-    <div class="topline"><div class="crumb">ScopeGuard AI <span style="color:#5d7975"> / </span> <b>Overview</b></div><div class="top-right"><span class="chip">Model: <strong>Gemma 3 4B</strong></span><span class="chip">Memory: <strong>FalkorDB</strong></span><span class="chip">Mode: <strong>Showcase</strong></span></div></div>
-    <p class="page-eyebrow">Freelancer scope intelligence</p>
-    <h1>Stop guessing what's <em>in scope.</em></h1>
-    <p class="intro">Turn a client’s “one small change” into a clear decision. ScopeGuard connects the original agreement, the new request, and reviewed project history—so freelancers can respond with evidence before promising more work.</p>
-    <div class="intro-actions"><a class="btn btn-primary" href="#workflow">Explore the workflow ↗</a><a class="btn btn-outline" href="https://github.com/agcodes0315/Scopeguard-AI" target="_blank" rel="noopener noreferrer">View source on GitHub ↗</a></div>
-    <div class="trust-note"><strong>Live site: visual walkthrough + synthetic examples.</strong> The complete agreement analysis, graph-backed replay, PDF proposal, and client approval workflow run in the local project. No customer agreements are uploaded or stored by this page.</div>
-    <section class="stats" aria-label="Product capabilities">
-      <article class="stat"><div class="stat-k">Core user</div><div class="stat-v">Freelancers</div><div class="stat-s">Fixed-scope website projects</div></article>
-      <article class="stat"><div class="stat-k">Analysis model</div><div class="stat-v">Gemma 3 4B</div><div class="stat-s">Local via Ollama</div></article>
-      <article class="stat"><div class="stat-k">Decision context</div><div class="stat-v">FalkorDB</div><div class="stat-s">Agreement-bound graph memory</div></article>
-      <article class="stat"><div class="stat-k">Approval safety</div><div class="stat-v">Human first</div><div class="stat-s">No automatic charges</div></article>
-    </section>
-    <section class="panel panel-accent" id="decision-memory"><span class="badge">The differentiator · Decision replay</span><h2 class="feature-heading">One request. Its full promise history.</h2><p class="feature-body">A Testimonials page may be outside a five-page agreement today. But if the freelancer later records a reviewed, agreement-specific exception, ScopeGuard can retrieve that history for a matching request. An unrelated checkout request or a changed agreement must not inherit that exception automatically.</p><div class="evidence-line"><strong>Graph evidence path:</strong> Project → Active agreement → Relevant clause → Client request → Human-reviewed exception. Previous approval remains subject to verification.</div></section>
-    <div class="two-panel">
-      <section class="panel" id="workflow"><h2 class="section-title">From request to resolution</h2><p class="section-desc">Four steps, one evidence-backed workflow.</p><div class="workflow">
-        <div class="step"><span class="step-n">01</span><div><strong>Review the agreement</strong><p>Load the original scope and its revision limits.</p></div></div>
-        <div class="step"><span class="step-n">02</span><div><strong>Analyze with Gemma</strong><p>Flag potential extras, included work, or uncertainty.</p></div></div>
-        <div class="step"><span class="step-n">03</span><div><strong>Prepare client approval</strong><p>Freelancer chooses hours and rate; client reviews.</p></div></div>
-        <div class="step"><span class="step-n">04</span><div><strong>Remember reviewed decisions</strong><p>FalkorDB retrieves relevant agreement-bound history.</p></div></div>
-      </div></section>
-      <section class="panel" id="chart"><h2 class="section-title">Sample decision mix</h2><p class="section-desc">Four fictional requests for illustration—not measured accuracy.</p><div class="chart-area"><div class="donut" role="img" aria-label="Four fictional requests: two potential extras, one needs review, one included"><div class="donut-center"><strong>4</strong><span>sample requests</span></div></div><div class="legend"><div><span class="legend-label"><i class="swatch" style="background:var(--sage)"></i>Potential extra</span><b>2</b></div><div><span class="legend-label"><i class="swatch" style="background:var(--sea)"></i>Needs review</span><b>1</b></div><div><span class="legend-label"><i class="swatch" style="background:#668087"></i>Included</span><b>1</b></div></div></div><p class="sample-tag">Illustrative categories only. Real classifications need agreement evidence and human review.</p></section>
-    </div>
-    <div class="two-panel">
-      <section class="panel" id="example-requests"><h2 class="section-title">Example client requests</h2><p class="section-desc">Fictional scope cases that show the problem in plain language.</p><div class="table-wrap"><table class="request-table"><thead><tr><th>Client asks for</th><th>Example outcome</th><th>Next step</th></tr></thead><tbody>
-        <tr><td>Sixth Testimonials page</td><td><span class="status extra">Potential extra</span></td><td>Review / estimate</td></tr>
-        <tr><td>Third revision round</td><td><span class="status extra">Potential extra</span></td><td>Review / estimate</td></tr>
-        <tr><td>Ambiguous design polish</td><td><span class="status review">Needs review</span></td><td>Clarify scope</td></tr>
-        <tr><td>Existing agreed Contact page</td><td><span class="status included">Included</span></td><td>Work to agreement</td></tr>
-      </tbody></table></div><p class="sample-tag">Rows are written examples, not actual live Gemma responses.</p></section>
-      <section class="panel" id="proposal"><h2 class="section-title">Illustrative change estimate</h2><p class="section-desc">Human-controlled pricing. This calculator does not create or send a proposal.</p><div class="calculator"><div class="field"><label for="hours">Extra hours</label><input id="hours" type="number" min="0" max="1000" step="0.5" value="4" inputmode="decimal"></div><div class="field"><label for="rate">Rate · INR/hour</label><input id="rate" type="number" min="0" max="1000000" step="1" value="1000" inputmode="decimal"></div></div><div style="color:var(--muted);font-size:12px">Example proposal total</div><output class="calc-total" id="total" aria-live="polite">₹4,000</output><p class="calc-error" id="calc-error" role="status"></p><p class="sample-tag">Actual approval links and PDFs are available in the local application; this is an illustrative estimate.</p></section>
-    </div>
-    <section class="cta" id="get-started"><div><h2>Explore the real implementation</h2><p>Run ScopeGuard locally with FastAPI, Ollama/Gemma and FalkorDB. The GitHub README provides setup steps, tests and safety limitations.</p></div><a class="btn btn-primary" href="https://github.com/agcodes0315/Scopeguard-AI#readme" target="_blank" rel="noopener noreferrer">Open setup guide ↗</a></section>
-    <footer class="footer"><span>ScopeGuard AI · Open-source prototype · Synthetic public showcase</span><span>Human-reviewed decisions · Not legal advice · No automatic billing</span></footer>
-  </main>
+<aside aria-label="Site navigation" class="sidebar">
+<a aria-label="ScopeGuard AI home" class="identity" href="#overview"><div class="mark">S</div><div><strong>ScopeGuard <span style="color:var(--sage)">AI</span></strong><small>Scope intelligence workspace</small></div></a>
+<div><div class="side-caption">Explore</div><nav class="side-nav">
+<a class="active" href="#overview"><svg viewbox="0 0 24 24"><rect height="8" rx="1" width="8" x="3" y="3"></rect><rect height="5" rx="1" width="8" x="13" y="3"></rect><rect height="11" rx="1" width="8" x="13" y="10"></rect><rect height="8" rx="1" width="8" x="3" y="13"></rect></svg>Overview</a>
+<a href="#workflow"><svg viewbox="0 0 24 24"><path d="M5 5h14M5 12h14M5 19h14"></path><circle cx="5" cy="5" r="2"></circle><circle cx="5" cy="12" r="2"></circle><circle cx="5" cy="19" r="2"></circle></svg>Workflow</a>
+<a href="#decision-memory"><svg viewbox="0 0 24 24"><circle cx="5" cy="12" r="3"></circle><circle cx="19" cy="5" r="3"></circle><circle cx="19" cy="19" r="3"></circle><path d="m8 11 8-5m-8 7 8 5"></path></svg>Decision memory</a>
+<a href="#example-requests"><svg viewbox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h8"></path></svg>Example requests</a>
+<a href="#proposal"><svg viewbox="0 0 24 24"><path d="M7 3h9l4 4v14H7zM16 3v5h4M10 12h7M10 16h7"></path></svg>Proposal estimate</a>
+<a href="#get-started"><svg viewbox="0 0 24 24"><path d="M4 4h16v16H4zM9 12h6m-3-3v6"></path></svg>Run locally</a>
+</nav></div>
+<div class="sidebar-bottom"><div><span class="online-dot"></span>Public product showcase</div><div style="margin-top:8px">The hosted page does not run private AI or graph services.</div></div>
+</aside>
+<main class="main" id="overview">
+<div class="topline"><div class="crumb">ScopeGuard AI <span style="color:#5d7975"> / </span> <b id="active-page-name">Overview</b></div><div class="top-right"><span class="chip">Model: <strong>Gemma 3 4B</strong></span><span class="chip">Memory: <strong>FalkorDB</strong></span><span class="chip">Mode: <strong>Showcase</strong></span></div></div>
+
+
+
+
+
+
+
+
+
+
+
+<section class="page-view" data-view="overview" id="view-overview"><p class="page-eyebrow">Freelancer scope intelligence</p><h1>Stop guessing what's <em>in scope.</em></h1><p class="intro">Turn a client’s “one small change” into a clear decision. ScopeGuard connects the original agreement, the new request, and reviewed project history—so freelancers can respond with evidence before promising more work.</p><div class="intro-actions"><a class="btn btn-primary" href="#workflow">Explore the workflow ↗</a><a class="btn btn-outline" href="https://github.com/agcodes0315/Scopeguard-AI" rel="noopener noreferrer" target="_blank">View source on GitHub ↗</a></div><div class="trust-note"><strong>Live site: visual walkthrough + synthetic examples.</strong> The complete agreement analysis, graph-backed replay, PDF proposal, and client approval workflow run in the local project. No customer agreements are uploaded or stored by this page.</div><section aria-label="Product capabilities" class="stats">
+<article class="stat"><div class="stat-k">Core user</div><div class="stat-v">Freelancers</div><div class="stat-s">Fixed-scope website projects</div></article>
+<article class="stat"><div class="stat-k">Analysis model</div><div class="stat-v">Gemma 3 4B</div><div class="stat-s">Local via Ollama</div></article>
+<article class="stat"><div class="stat-k">Decision context</div><div class="stat-v">FalkorDB</div><div class="stat-s">Agreement-bound graph memory</div></article>
+<article class="stat"><div class="stat-k">Approval safety</div><div class="stat-v">Human first</div><div class="stat-s">No automatic charges</div></article>
+</section><section class="panel panel-accent"><span class="badge">Why the graph matters</span><h2 class="feature-heading">A memory-aware response, not another contract summary.</h2><p class="feature-body">The central scenario: an extra Testimonials page is flagged; a reviewer records a project-specific exception; a later matching request can retrieve that reviewed history. A new checkout request or revised agreement does not inherit it automatically.</p><div class="intro-actions"><a class="btn btn-primary" href="#decision-memory">Open Decision Replay →</a><a class="btn btn-outline" href="#example-requests">Browse examples →</a></div></section></section><section class="page-view" data-view="workflow" hidden="" id="view-workflow"><div class="view-header"><p class="page-eyebrow">Product journey</p><h1>Agreement-to-approval workflow</h1><p>The four-step workflow and illustrative case distribution.</p></div><section class="panel" id="workflow"><h2 class="section-title">From request to resolution</h2><p class="section-desc">Four steps, one evidence-backed workflow.</p><div class="workflow">
+<div class="step"><span class="step-n">01</span><div><strong>Review the agreement</strong><p>Load the original scope and its revision limits.</p></div></div>
+<div class="step"><span class="step-n">02</span><div><strong>Analyze with Gemma</strong><p>Flag potential extras, included work, or uncertainty.</p></div></div>
+<div class="step"><span class="step-n">03</span><div><strong>Prepare client approval</strong><p>Freelancer chooses hours and rate; client reviews.</p></div></div>
+<div class="step"><span class="step-n">04</span><div><strong>Remember reviewed decisions</strong><p>FalkorDB retrieves relevant agreement-bound history.</p></div></div>
+</div></section><section class="panel" id="chart"><h2 class="section-title">Sample decision mix</h2><p class="section-desc">Four fictional requests for illustration—not measured accuracy.</p><div class="chart-area"><div aria-label="Four fictional requests: two potential extras, one needs review, one included" class="donut" role="img"><div class="donut-center"><strong>4</strong><span>sample requests</span></div></div><div class="legend"><div><span class="legend-label"><i class="swatch" style="background:var(--sage)"></i>Potential extra</span><b>2</b></div><div><span class="legend-label"><i class="swatch" style="background:var(--sea)"></i>Needs review</span><b>1</b></div><div><span class="legend-label"><i class="swatch" style="background:#668087"></i>Included</span><b>1</b></div></div></div><p class="sample-tag">Illustrative categories only. Real classifications need agreement evidence and human review.</p></section></section><section class="page-view" data-view="decision-memory" hidden="" id="view-decision-memory"><div class="view-header"><p class="page-eyebrow">Graph intelligence</p><h1>Decision replay</h1><p>See how relationship-bound decisions can change what the agent recommends next.</p></div><section class="panel panel-accent" id="decision-memory"><span class="badge">The differentiator · Decision replay</span><h2 class="feature-heading">One request. Its full promise history.</h2><p class="feature-body">A Testimonials page may be outside a five-page agreement today. But if the freelancer later records a reviewed, agreement-specific exception, ScopeGuard can retrieve that history for a matching request. An unrelated checkout request or a changed agreement must not inherit that exception automatically.</p><div class="evidence-line"><strong>Graph evidence path:</strong> Project → Active agreement → Relevant clause → Client request → Human-reviewed exception. Previous approval remains subject to verification.</div></section><div class="screen-note"><strong>Important:</strong> This is a visual walkthrough. Graph evidence shown here is schematic. For live Cypher queries, agreement-version replay and human-reviewed decisions, run the local Atlas Decision Desk from the repository.</div><section class="panel"><h2 class="section-title">How the graph changes guidance</h2><p class="section-desc">Illustrative decision sequence—not a live database query.</p><div class="workflow"><div class="step"><span class="step-n">01</span><div><strong>No matching reviewed decision</strong><p>Testimonials page → review agreement evidence; possible extra work.</p></div></div><div class="step"><span class="step-n">02</span><div><strong>Matching reviewed exception found</strong><p>Same request under the same agreement version → surface exception conditions, require human verification.</p></div></div><div class="step"><span class="step-n">03</span><div><strong>Different request or version</strong><p>Online checkout or an updated agreement → do not reuse the old exception; reassess.</p></div></div></div></section></section><section class="page-view" data-view="example-requests" hidden="" id="view-example-requests"><div class="view-header"><p class="page-eyebrow">Scope triage</p><h1>Client request examples</h1><p>Synthetic examples only—not live inference or customer records.</p></div><section class="panel" id="example-requests"><h2 class="section-title">Example client requests</h2><p class="section-desc">Fictional scope cases that show the problem in plain language.</p><div class="table-wrap"><table class="request-table"><thead><tr><th>Client asks for</th><th>Example outcome</th><th>Next step</th></tr></thead><tbody>
+<tr><td>Sixth Testimonials page</td><td><span class="status extra">Potential extra</span></td><td>Review / estimate</td></tr>
+<tr><td>Third revision round</td><td><span class="status extra">Potential extra</span></td><td>Review / estimate</td></tr>
+<tr><td>Ambiguous design polish</td><td><span class="status review">Needs review</span></td><td>Clarify scope</td></tr>
+<tr><td>Existing agreed Contact page</td><td><span class="status included">Included</span></td><td>Work to agreement</td></tr>
+</tbody></table></div><p class="sample-tag">Rows are written examples, not actual live Gemma responses.</p></section></section><section class="page-view" data-view="proposal" hidden="" id="view-proposal"><div class="view-header"><p class="page-eyebrow">Human-controlled pricing</p><h1>Proposal estimate</h1><p>Model a hypothetical change estimate. No approval or billing happens here.</p></div><section class="panel" id="proposal"><h2 class="section-title">Illustrative change estimate</h2><p class="section-desc">Human-controlled pricing. This calculator does not create or send a proposal.</p><div class="calculator"><div class="field"><label for="hours">Extra hours</label><input id="hours" inputmode="decimal" max="1000" min="0" step="0.5" type="number" value="4"/></div><div class="field"><label for="rate">Rate · INR/hour</label><input id="rate" inputmode="decimal" max="1000000" min="0" step="1" type="number" value="1000"/></div></div><div style="color:var(--muted);font-size:12px">Example proposal total</div><output aria-live="polite" class="calc-total" id="total">₹4,000</output><p class="calc-error" id="calc-error" role="status"></p><p class="sample-tag">Actual approval links and PDFs are available in the local application; this is an illustrative estimate.</p></section></section><section class="page-view" data-view="get-started" hidden="" id="view-get-started"><div class="view-header"><p class="page-eyebrow">Developer setup</p><h1>Run the full application</h1><p>The actual model, graph, and approval system run locally.</p></div><section class="cta" id="get-started"><div><h2>Explore the real implementation</h2><p>Run ScopeGuard locally with FastAPI, Ollama/Gemma and FalkorDB. The GitHub README provides setup steps, tests and safety limitations.</p></div><a class="btn btn-primary" href="https://github.com/agcodes0315/Scopeguard-AI#readme" rel="noopener noreferrer" target="_blank">Open setup guide ↗</a></section><div class="screen-note"><strong>Local project routes:</strong> Start the app using <code>start.ps1</code> and use the port printed in the terminal. Open <code>/atlas.html</code> for the graph-backed Decision Desk, <code>/graph.html</code> for graph context, and <code>/</code> for the approval workflow. These localhost paths are not hosted on this public static site.</div></section><footer class="footer"><span>ScopeGuard AI · Open-source prototype · Synthetic public showcase</span><span>Human-reviewed decisions · Not legal advice · No automatic billing</span></footer></main>
 </div>
 <script>
   (() => {
@@ -158,10 +168,31 @@
       total.textContent=format.format(h*r);error.textContent='';
     }
     hours.addEventListener('input',recalc);rate.addEventListener('input',recalc);recalc();
+    const viewIds = ['overview','workflow','decision-memory','example-requests','proposal','get-started'];
     const links = [...document.querySelectorAll('.side-nav a')];
-    links.forEach(a=>a.addEventListener('click',()=>{
-      links.forEach(link=>link.classList.remove('active'));a.classList.add('active');
+    const titles = {overview:'Overview',workflow:'Workflow','decision-memory':'Decision memory','example-requests':'Example requests',proposal:'Proposal estimate','get-started':'Run locally'};
+    function openView(name, writeHistory=false){
+      if(!viewIds.includes(name)) name='overview';
+      for(const id of viewIds){document.getElementById('view-'+id).hidden=(id!==name)}
+      for(const link of links){
+        const active=link.getAttribute('href')==='#'+name;
+        link.classList.toggle('active',active);
+        if(active) link.setAttribute('aria-current','page');
+        else link.removeAttribute('aria-current');
+      }
+      const title=document.getElementById('active-page-name');
+      if(title) title.textContent=titles[name];
+      if(writeHistory && location.hash!=='#'+name) history.pushState(null,'','#'+name);
+      window.scrollTo({top:0,behavior:'instant'});
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click',event=>{
+      const destination=link.getAttribute('href').slice(1);
+      if(!viewIds.includes(destination)) return;
+      event.preventDefault();openView(destination,true);
     }));
+    window.addEventListener('popstate',()=>openView(decodeURIComponent(location.hash.slice(1))));
+    window.addEventListener('hashchange',()=>openView(decodeURIComponent(location.hash.slice(1))));
+    openView(decodeURIComponent(location.hash.slice(1)));
   })();
 </script>
 </body>
