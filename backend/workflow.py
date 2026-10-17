@@ -10,11 +10,9 @@ from typing import Literal
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
 from pydantic import BaseModel, Field
-
 ROOT=Path(__file__).resolve().parent.parent
 DB=Path(os.getenv('SCOPEGUARD_DB',str(ROOT/'data'/'scopeguard.db')))
 router=APIRouter(prefix='/api')
-
 def connection():
     """Every connection gets required schema, including isolated Windows test DBs."""
     DB.parent.mkdir(parents=True,exist_ok=True)
@@ -35,7 +33,6 @@ class LineItem(BaseModel):
     description:str=Field(min_length=3,max_length=240)
     hours:float=Field(ge=0,le=1000)
     evidence:str=Field(default='',max_length=1000)
-
 class CreateProposal(BaseModel):
     title:str=Field(min_length=3,max_length=160)
     currency:Literal['INR','USD','EUR','GBP']= 'INR'
@@ -47,7 +44,6 @@ class CreateProposal(BaseModel):
 class Decision(BaseModel):
     decision:Literal['approved','rejected','clarification_requested']
     note:str=Field(default='',max_length=1000)
-
 @router.post('/proposals',status_code=201)
 def create_proposal(body:CreateProposal):
     with connection() as db:
@@ -80,7 +76,6 @@ def get(token:str):
     import json
     d=dict(row);d['items']=json.loads(d.pop('items_json'))
     return d
-
 @router.get('/proposals/{token}')
 def read_proposal(token:str):return get(token)
 

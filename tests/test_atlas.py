@@ -1,7 +1,6 @@
 import pytest
 from fastapi import HTTPException
 from backend.atlas import fingerprint, RecordException, PreviewRequest, record_exception, preview
-
 class Graph:
     def __init__(self,rows=None,version=1):
         self.rows=rows or []

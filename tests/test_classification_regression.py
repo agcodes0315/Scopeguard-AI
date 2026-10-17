@@ -1,5 +1,4 @@
 """Regression tests from the 21/24 local Gemma benchmark.
-
 Mocks model output to test backend guardrails (not the live model's quality).
 """
 import json
@@ -12,8 +11,6 @@ AGREEMENT = (
     "information updates during included rounds are covered. Additional pages and "
     "any third revision require separate approval and pricing."
 )
-
-
 def _evaluate(monkeypatch, tmp_path, user_request, items):
     monkeypatch.setattr(workflow, 'DB', tmp_path / 'classification.db')
     monkeypatch.setattr(main, 'call_ollama', lambda _: json.dumps({'summary': 'Test', 'items': items}))
