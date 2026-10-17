@@ -1,0 +1,12 @@
+const assert = require('node:assert/strict');
+const {explain} = require('../frontend/decision-replay.js');
+const e = JSON.stringify({current_version:2,path:[{node:'Project'}]});
+assert.match(explain('stale_exception\nOld agreement',e).message,/agreement version 2/);
+assert.match(explain('applicable_customer_approved_exception',e).message,/not independent proof of consent/);
+assert.match(explain('reviewer_confirmed_only',e).message,/not been established/);
+assert.match(explain('no_applicable_exception',e).title,/No matching/);
+assert.match(explain('potential_extra\nSource: graph_memory','[]').title,/graph memory/);
+assert.match(explain('needs_review\nSource: graph_agreement_plus_gemma','[]').message,/Gemma/);
+assert.match(explain('conflict',e).message,/do not automatically apply/);
+assert.equal(explain('Create a project to begin.',''),null);
+console.log('8 decision-replay explanation checks passed');

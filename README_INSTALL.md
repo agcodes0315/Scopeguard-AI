@@ -1,26 +1,31 @@
-# ScopeGuard quality + validation add-on (non-destructive)
+# ScopeGuard Atlas — Judge-friendly Decision Replay
 
-The **existing repository is the project**. This pack adds a usable real-world pilot and judge proof. It does not overwrite `backend/main.py`, the frontend, or your existing README.
+This is an **additive frontend-only patch** that makes existing graph states understandable without changing the verified classification, billing, approval or graph backend. It is deliberately not a fabricated time-savings benchmark and does not claim new multi-hop graph reasoning.
 
-## Install on Windows
+## Install (Windows PowerShell)
 
-1. Extract ZIP to a temporary directory (e.g. Downloads\scopeguard-pack).
-2. Open your VS Code PowerShell inside `C:\Users\Lenovo\Desktop\scopeguard-ai`.
-3. Create a feature branch before copying files: `git switch main; git pull --ff-only origin main; git switch -c feat/pilot-proof-and-judge-demo`.
-4. Run `powershell -ExecutionPolicy Bypass -File "C:\Users\Lenovo\Downloads\scopeguard-pack\INSTALL_IMPROVEMENTS.ps1"` (adjust path to extracted location).
-5. Run ` .\.venv\Scripts\python.exe -m pytest -q`. In the previously reported repo the baseline was 62 tests; this pack adds 5 tests, so **67 pass would be expected** if the existing code is unchanged. This figure is a target, not a verified Windows result.
-6. `git status; git add tools/impact_benchmark.py tests/test_impact_benchmark.py docs/PRODUCT_VALIDATION.md docs/JUDGE_DEMO_RUNBOOK.md docs/PRIORITY_FIXES.md evaluation/pilot_results_TEMPLATE.csv; git diff --cached --check; git commit -m "feat: add measured pilot benchmarking and demo evidence"; git push -u origin feat/pilot-proof-and-judge-demo`. Open a PR and review before merging.
-
-## Run the actual study
-
-Copy `evaluation/pilot_results_TEMPLATE.csv` to `evaluation/pilot_results.csv`. Gather **real paired results**, no placeholders. Then:
+1. Extract this ZIP somewhere outside the repository (e.g. Downloads).
+2. In your actual project root, run:
 
 ```powershell
-.\.venv\Scripts\python.exe tools\impact_benchmark.py --input evaluation\pilot_results.csv
+cd C:\Users\Lenovo\Desktop\scopeguard-ai
+.\.venv\Scripts\python.exe "$env:USERPROFILE\Downloads\scopeguard-atlas-upgrade\install_upgrade.py"
+.\.venv\Scripts\python.exe -m pytest -q
 ```
 
-The benchmark **refuses empty data**. Avoid committing the raw pilot CSV if it contains any participant-identifying information. Share aggregated results only with consent.
+If you extracted to a different folder, replace the quoted installer path. No environment variables or tokens are required.
 
-## No unverified product claims
+Optional: with Node installed, run `node "$env:USERPROFILE\Downloads\scopeguard-atlas-upgrade\tests\test_decision_replay.js"`.
 
-This pack improves **measurement, reproducibility, submission and product validation**. It does not claim to implement multi-hop graph algorithms, optimize model latency or fix unresolved model classifications. To safely change the backend, inspect and patch the current actual repo first.
+## What changes
+
+- Adds `frontend/decision-replay.js` to show clear, state-specific explanations: no matching exception, matching reviewed decision, unverified consent, stale exception, conflict, graph-memory reuse or fresh Gemma analysis.
+- Modifies one `script` tag in `frontend/atlas.html`; original `atlas.js` and its behavior are unchanged.
+- Moves raw JSON into an expandable **Technical evidence** panel for judges.
+- Never promises customer approval or grants billing based on graph states.
+
+## Verify in the browser
+
+Start Docker, Ollama, and `start.ps1`. Visit the local `/atlas.html`. Use the existing synthetic agreement and an identical previously reviewed request, then an unrelated checkout request. Check that the new explanation changes and that Technical evidence retains the raw graph path. For a stale agreement, only claim version invalidation if it has been tested on a new actual agreement version.
+
+**Note:** This package does not create new agreement-version editing endpoints. Backend version invalidation already has a unit test; an end-to-end version-change UI would be separate work.

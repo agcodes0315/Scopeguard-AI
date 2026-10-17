@@ -1,0 +1,23 @@
+warning: in the working copy of '.env.example', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/.env.example b/.env.example[m
+[1mindex 5c6a582..587cf8c 100644[m
+[1m--- a/.env.example[m
+[1m+++ b/.env.example[m
+[36m@@ -1,4 +1,4 @@[m
+ # Optional local configuration. start.ps1 does not automatically load this file.[m
+[31m-OLLAMA_MODEL=gemma3:4b[m
+ OLLAMA_URL=http://127.0.0.1:11434[m
+[31m-# SCOPEGUARD_DB=data/scopeguard.db[m
+[32m+[m[32m# SCOPEGUARD_DB=data/scopeguard.db[m[41m [m
+[32m+[m[32mOLLAMA_MODEL=gemma3:4b[m
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mindex 3d812a9..9f3cce7 100644[m
+[1m--- a/.gitignore[m
+[1m+++ b/.gitignore[m
+[36m@@ -9,4 +9,5 @@[m [m__pycache__/[m
+ *.sqlite3[m
+ data/[m
+ *.log[m
+[32m+[m
+ evaluation/results.json[m
