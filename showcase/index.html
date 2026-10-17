@@ -1,164 +1,297 @@
+﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="ScopeGuard AI helps freelancers review scope changes using local Gemma and FalkorDB.">
-  <title>ScopeGuard AI: Protect the Work</title>
+  <title>ScopeGuard AI — Protect the Work</title>
+
   <style>
-    * { 
-      box-sizing: border-box; 
+    :root {
+      --background: #D9D28B;
+      --sage: #B2BD7E;
+      --olive: #8E9162;
+      --forest: #6A795D;
+      --text: #263223;
+      --muted: #47533D;
+      --white: #FFFFFF;
     }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      background: #0b1222;
-      color: #e8efff;
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--text);
       font-family: Arial, sans-serif;
       line-height: 1.65;
     }
-    main { max-width: 1080px; margin: auto; padding: 72px 24px; }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 72px 28px 56px;
+    }
+
     .eyebrow {
-      color: #62dac6;
+      color: #435439;
       text-transform: uppercase;
       letter-spacing: 3px;
-      font-weight: bold;
+      font-size: 13px;
+      font-weight: 800;
     }
-    h1 { font-size: clamp(40px, 7vw, 76px); line-height: 1.1; }
-    h1 span { color: #62dac6; }
-    h2 { margin-top: 0; }
-    .lead { max-width: 720px; font-size: 20px; color: #b9c9e4; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-      margin: 36px 0;
+
+    h1 {
+      font-size: clamp(42px, 7vw, 80px);
+      line-height: 1.12;
+      letter-spacing: -2px;
+      margin: 34px 0;
     }
-    .card {
-      background: #16233a;
-      border: 1px solid #30435f;
-      border-radius: 16px;
-      padding: 26px;
+
+    h1 span {
+      color: var(--forest);
     }
-    .card p { color: #b9c9e4; }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 28px;
+    }
+
+    .lead {
+      max-width: 760px;
+      font-size: 20px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 42px;
+    }
+
     .button {
       display: inline-block;
-      padding: 13px 22px;
-      margin: 12px 10px 12px 0;
+      padding: 13px 24px;
       border-radius: 10px;
-      background: #62dac6;
-      color: #061c23;
-      font-weight: bold;
+      background: var(--forest);
+      color: var(--white);
+      font-weight: 700;
       text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
-    .secondary { background: #263854; color: #e8efff; }
-    footer { color: #92a9c9; margin-top: 60px; font-size: 14px; }
+
+    .button:hover {
+      background: #526348;
+      transform: translateY(-2px);
+    }
+
+    .button.secondary {
+      background: var(--sage);
+      color: var(--text);
+    }
+
+    .button.secondary:hover {
+      background: var(--olive);
+      color: var(--white);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+      margin: 28px 0 48px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid rgba(68, 82, 54, 0.22);
+      border-radius: 16px;
+      padding: 28px;
+      min-height: 235px;
+    }
+
+    .card h3 {
+      margin: 0 0 22px;
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    .card p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .grid .card:nth-child(1) {
+      border-top: 5px solid var(--background);
+    }
+
+    .grid .card:nth-child(2) {
+      border-top: 5px solid var(--sage);
+    }
+
+    .grid .card:nth-child(3) {
+      border-top: 5px solid var(--olive);
+    }
+
+    .grid .card:nth-child(4) {
+      border-top: 5px solid var(--forest);
+    }
+
+    .implementation {
+      background: var(--sage);
+      border: 1px solid var(--olive);
+      border-radius: 18px;
+      padding: 36px;
+      margin-top: 32px;
+    }
+
+    .implementation p {
+      color: var(--text);
+      max-width: 900px;
+    }
+
+    footer {
+      color: var(--muted);
+      margin-top: 55px;
+      font-size: 14px;
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--text);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      main {
+        padding: 42px 20px;
+      }
+
+      h1 {
+        letter-spacing: -1px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: auto;
+      }
+
+      .implementation {
+        padding: 24px;
+      }
+    }
   </style>
-<style id="olive-showcase-theme">
-  body {
-    background: #F8F8EF;
-    color: #263223;
-  }
-  .eyebrow, h1 span {
-    color: #6A795D;
-  }
-  .lead, footer, .card p {
-    color: #52614B;
-  }
-  .card {
-    background: #FFFDF5;
-    border-color: #D5DABD;
-  }
-  .button {
-    background: #6A795D;
-    color: #FFFFFF;
-  }
-  .button:hover {
-    background: #526348;
-  }
-  .button.secondary {
-    background: #B2BD7E;
-    color: #263223;
-  }
-  .grid .card:nth-child(2) {
-    border-top: 4px solid #D9D28B;
-  }
-  .grid .card:nth-child(3) {
-    border-top: 4px solid #B2BD7E;
-  }
-  .grid .card:nth-child(4) {
-    border-top: 4px solid #8E9162;
-  }
-  a:focus-visible {
-    outline: 3px solid #8E9162;
-    outline-offset: 3px;
-  }
-</style>
 </head>
+
 <body>
   <main>
     <p class="eyebrow">Open-weight Gemma + FalkorDB</p>
-    <h1>Protect the work.<br><span>Recover the value.</span></h1>
+
+    <h1>
+      Protect the work.
+      <br>
+      <span>Recover the value.</span>
+    </h1>
 
     <p class="lead">
-      ScopeGuard AI helps freelance web developers compare
-      client requests with project agreements, identify possible
-      scope changes, and obtain human-reviewed approval.
+      ScopeGuard AI helps freelance web developers compare client
+      requests with project agreements, identify possible scope
+      changes, and obtain human-reviewed approval.
     </p>
 
-    <a class="button"
-       href="https://github.com/agcodes0315/Scopeguard-AI">
-       Explore the code
-    </a>
+    <div class="actions">
+      <a
+        class="button"
+        href="https://github.com/agcodes0315/Scopeguard-AI"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Explore the code
+      </a>
 
-    <a class="button secondary"
-       href="#how-it-works">
-       See how it works
-    </a>
+      <a class="button secondary" href="#how-it-works">
+        See how it works
+      </a>
+    </div>
 
     <section id="how-it-works">
       <h2>From request to resolution</h2>
 
       <div class="grid">
-        <div class="card">
+        <article class="card">
           <h3>01. Review the agreement</h3>
-          <p>Identify relevant scope terms and included revisions.</p>
-        </div>
+          <p>
+            Identify relevant scope terms and included revisions.
+          </p>
+        </article>
 
-        <div class="card">
+        <article class="card">
           <h3>02. Analyze with Gemma</h3>
-          <p>Flag possible extra work with supporting evidence.</p>
-        </div>
+          <p>
+            Flag possible extra work with supporting evidence.
+          </p>
+        </article>
 
-        <div class="card">
+        <article class="card">
           <h3>03. Request approval</h3>
-          <p>Prepare a human-priced proposal for client review.</p>
-        </div>
+          <p>
+            Prepare a human-priced proposal for client review.
+          </p>
+        </article>
 
-        <div class="card">
+        <article class="card">
           <h3>04. Remember decisions</h3>
-          <p>FalkorDB connects projects, agreements and decisions.</p>
-        </div>
+          <p>
+            FalkorDB connects projects, agreements and decisions.
+          </p>
+        </article>
       </div>
     </section>
 
-    <section class="card">
+    <section class="implementation">
       <h2>See the real implementation</h2>
+
       <p>
         The complete local application runs Gemma 3 4B through
         Ollama and uses FalkorDB for connected decision memory.
       </p>
+
       <p>
         This public site is a project showcase. Local AI inference
         and private project workflows are not hosted on this page.
       </p>
-      <a class="button"
-         href="https://github.com/agcodes0315/Scopeguard-AI">
-         View installation instructions
+
+      <a
+        class="button"
+        href="https://github.com/agcodes0315/Scopeguard-AI"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View installation instructions
       </a>
     </section>
 
     <footer>
-      ScopeGuard AI Open-source, human-reviewed scope intelligence.
+      ScopeGuard AI — Open-source, human-reviewed scope intelligence.
       Demonstration only. Not legal advice.
     </footer>
   </main>
