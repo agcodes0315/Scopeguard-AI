@@ -4,7 +4,7 @@
 
 **A local-first scope-change and client-approval assistant for freelance web developers, powered by Gemma 3 4B and FalkorDB.**
 
-[![Live showcase](https://img.shields.io/badge/Live_Showcase-Render-46cbb9?style=for-the-badge)](https://scopeguard-ai-508d.onrender.com/) [![Source code](https://img.shields.io/badge/GitHub-Source_Code-181717?style=for-the-badge&logo=github)](https://github.com/agcodes0315/Scopeguard-AI) [![Tests](https://img.shields.io/badge/Local_Tests-62_Passing-279b65?style=for-the-badge)](#testing-and-evaluation) [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![Live showcase](https://img.shields.io/badge/Live_Showcase-Render-46cbb9?style=for-the-badge)](https://scopeguard-ai-508d.onrender.com/) [![Source code](https://img.shields.io/badge/GitHub-Source_Code-181717?style=for-the-badge&logo=github)](https://github.com/agcodes0315/Scopeguard-AI) [![Tests](https://img.shields.io/badge/Local_Tests-67_Passing-279b65?style=for-the-badge)](#testing-and-evaluation) [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 > **Live-site clarification:** The Render link is a public *showcase*, not a publicly hosted Gemma/FalkorDB application. The full working prototype runs locally. Do not upload real customer contracts to a publicly accessible unauthenticated instance.
 
@@ -193,7 +193,7 @@ docker compose -f compose.graph.yml ps
 ollama list
 ```
 
-**Last user-reported local verification (October 2026):** `62 passed, 1 warning`. Docker showed a running FalkorDB container, and `ollama list` included `gemma3:4b`. The warning concerned Starlette's deprecated TestClient dependency; it did not fail that test run. This does **not** mean 62 live-model or end-to-end browser tests were performed.
+**Last user-reported local verification (October 17, 2026):** `67 passed, 1 warning`. Docker showed a running FalkorDB container, and `ollama list` included `gemma3:4b`. The warning concerned Starlette's deprecated TestClient dependency; it did not fail that test run. This does **not** mean 62 live-model or end-to-end browser tests were performed.
 
 ### Optional live Gemma scenario evaluation
 
@@ -204,7 +204,7 @@ $env:SCOPEGUARD_URL = 'http://127.0.0.1:8001'
 .\.venv\Scripts\python.exe evaluation\run_evaluation.py
 ```
 
-The repository contains **24 human-labeled synthetic scenarios**. The scenario pass rate can vary with model behavior and versions; report the actual `evaluation/results.json` output from the run. **Scenario success is not a statistically representative accuracy, precision or recall measure.**
+The repository contains **24 labeled synthetic scenarios**. On October 17, 2026 the user ran `evaluation/run_evaluation.py` locally with Gemma and reported 24/24 PASS; results were saved to `evaluation/results.json`. This is a reported local run, not an independently audited claim. Outcomes can vary with model behavior and versions. **Scenario success is not a statistically representative accuracy, precision or recall measure.**
 
 ## Evaluation, impact and product decisions
 
@@ -212,8 +212,8 @@ The repository contains **24 human-labeled synthetic scenarios**. The scenario p
 
 | Metric | Current evidence | Interpretation |
 |---|---|---|
-| Automated regression tests | **62 passed** in a reported local `.venv` run | Functional and safety checks pass in that environment |
-| Synthetic scenarios | **24 labeled cases** available | Reproducible evaluation inputs, not 24 real users |
+| Automated regression tests | **67 passed** in a reported local `.venv` run | Functional and safety checks pass in that environment |
+| Synthetic scenarios | **24/24 predefined live synthetic scenarios passed** in the reported October 17, 2026 local run | Reproducible evaluation inputs, not 24 real users |
 | Cross-session graph memory | Demonstrated with `graph_memory` and graph evidence paths | Qualitative demo, not a large-scale benchmark |
 | Client approval | Synthetic ₹4,000 proposal and approval demonstrated | Fictional workflow, not recovered revenue |
 | Public deployment | Render static showcase live | Not full-cloud Gemma inference or client-facing SaaS |
@@ -280,6 +280,21 @@ This is a **hackathon MVP, not a production-secure multi-tenant service**.
 
 **After the hackathon:** improve graph versioning UI, smarter-but-safe evidence retrieval, project onboarding, secure identity/approval, model performance and a proper hosted architecture.
 
+## Graph Hacks 2026 development provenance
+
+ScopeGuard began as a local-first scope-management and customer-approval prototype **before** Graph Hacks. The competition-specific contribution focuses on FalkorDB-backed agreement relationships, version-aware exception context, human-reviewed decision memory, and the Atlas Decision Desk. The earlier local workflow is supporting infrastructure, not work claimed to have been created for the first time during the event.
+
+**Eligibility evidence:** The repository intentionally preserves original commit timestamps and history. To verify precisely which graph files and features were implemented during the October 15–18, 2026 event period, inspect commit timestamps, pull requests, and file diffs rather than relying on this description alone. Only work demonstrably completed within the official window should be claimed as event work. Organizers determine eligibility.
+
+```powershell
+# From the cloned repository: inspect actual timestamped commits
+# (this does not rewrite any history)
+git log --all --since="2026-10-15T00:00:00+05:30" --until="2026-10-18T23:59:59+05:30" --date=iso-strict --pretty=format:"%h | %ad | %s"
+git log --all --date=iso-strict -- backend/graph_context.py backend/atlas.py frontend/atlas.html docs/ATLAS_GRAPH_MODEL.md
+```
+
+The graph features cannot be considered eligible merely because a README or a new commit was added within the event window. No historical commits are reset, redated, or concealed.
+
 ## Hackathon context and transparency
 
 **Graph Hacks — FalkorDB:** The graph-supported Atlas workflow is the relevant entry: FalkorDB is a required runtime dependency for graph decisions, and history influences later analysis. The strongest proposed track is **Agents That Act on Connected Data**; memory is also relevant, but this prototype does not yet demonstrate multiple cooperating agents.
@@ -307,3 +322,22 @@ AI coding assistance was used during development; the contributor must review, t
 **MIT License** — see [`LICENSE`](LICENSE). Source and issue tracker: [agcodes0315/Scopeguard-AI](https://github.com/agcodes0315/Scopeguard-AI).
 
 Built as a practical investigation into a simple principle: **an AI recommendation should lead to a transparent human decision, and the next decision should remember the evidence behind the last one.**
+## Graph Hacks 2026 Development
+
+ScopeGuard began as a local-first freelancer scope-management prototype before the event.
+
+During Graph Hacks, the project was extended with FalkorDB-backed agreement and decision-memory workflows, including connected evidence retrieval, human-reviewed exceptions, agreement-version context, and the Atlas Decision Desk.
+
+The earlier application provided the supporting scope-analysis and customer-approval workflow. The Graph Hacks contribution focuses on making previous decisions retrievable, traceable, and relevant to future client requests.
+
+The repository preserves its original development history. Event-specific contributions should be verified against the actual Git commits and implementation files.
+
+### Why FalkorDB matters
+
+- Connects projects, agreements, clauses, requests, and decisions.
+- Retrieves reviewed decisions for matching requests.
+- Preserves agreement-version context.
+- Avoids reusing an unrelated request's previous decision.
+- Exposes the relationship path supporting the result.
+
+**Transparency:** The local application existed before Graph Hacks. The graph-specific enhancements are the competition contribution.
