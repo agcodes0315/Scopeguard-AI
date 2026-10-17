@@ -1,0 +1,124 @@
+﻿:root {
+  color-scheme: light;
+  --olive-gold: #D9D28B;
+  --olive-sage: #B2BD7E;
+  --olive-muted: #8E9162;
+  --olive-deep: #6A795D;
+  --olive-ink: #263223;
+  --olive-paper: #F8F8EF;
+  --olive-card: #FFFDF5;
+  --olive-border: #D5DABD;
+  --olive-subtle: #52614B;
+  background: var(--olive-paper);
+  color: var(--olive-ink);
+}
+
+body {
+  background: var(--olive-paper);
+  color: var(--olive-ink);
+}
+
+header {
+  background: var(--olive-card);
+  border-bottom: 1px solid var(--olive-border);
+}
+
+.logo, h1, h2, h3, strong {
+  color: var(--olive-ink);
+}
+
+.logo span, .hero em, .tag {
+  color: var(--olive-deep);
+}
+
+.hero p, .quiet, .panel p, .results > p,
+.issue p, label, footer, header small,
+.vault-panel p {
+  color: var(--olive-subtle);
+}
+
+.panel, .results, .vault-panel, .issue,
+.step, .trace, .callout {
+  background: var(--olive-card);
+  border-color: var(--olive-border);
+  color: var(--olive-ink);
+}
+
+.step {
+  border: 1px solid var(--olive-border);
+  border-radius: 12px;
+}
+
+textarea, input, select,
+.vault-panel input, .vault-panel select,
+.vault-panel textarea {
+  background: #FFFFFF;
+  color: var(--olive-ink);
+  border: 1px solid var(--olive-muted);
+}
+
+textarea::placeholder, input::placeholder {
+  color: #75816E;
+}
+
+textarea:focus, input:focus, select:focus {
+  outline: 2px solid var(--olive-deep);
+  outline-offset: 2px;
+}
+
+button {
+  background: var(--olive-deep);
+  color: #FFFFFF;
+  border-radius: 10px;
+}
+
+button:hover:not(:disabled) {
+  background: #526348;
+}
+
+button.secondary, .secondary {
+  background: var(--olive-sage);
+  color: var(--olive-ink);
+}
+
+button.secondary:hover:not(:disabled) {
+  background: var(--olive-gold);
+}
+
+a, .textlink, #proposal-link a,
+.file-upload, #upload-status {
+  color: #43583B;
+}
+
+.pill.potential_extra {
+  background: #EEE1AA;
+  color: #594712;
+}
+
+.pill.included {
+  background: #DDE9CC;
+  color: #28502F;
+}
+
+.pill.needs_review {
+  background: #E5E8DA;
+  color: #465345;
+}
+
+#status {
+  color: #82610F;
+}
+
+.callout {
+  border-left: 4px solid var(--olive-deep);
+}
+
+.trace {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 3px solid var(--olive-muted);
+  outline-offset: 3px;
+}
