@@ -3,7 +3,6 @@ from fastapi.testclient import TestClient
 from backend.main import app
 import backend.main as main
 import backend.workflow as workflow
-
 AGREEMENT = ('The client commissions a five-page website for INR 30,000. '
 'The website includes Home, About, Services, Portfolio, and Contact pages. '
 'The agreement includes two rounds of revisions. '

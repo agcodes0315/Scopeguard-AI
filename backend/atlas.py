@@ -14,8 +14,6 @@ from backend.graph_context import get_graph
 router = APIRouter(prefix="/api/atlas", tags=["ScopeGuard Atlas"])
 def fingerprint(text: str) -> str:
     return hashlib.sha256(" ".join(text.casefold().split()).encode("utf-8")).hexdigest()
-
-
 class RecordException(BaseModel):
     project_id: str = Field(min_length=1)
     request_text: str = Field(min_length=5, max_length=15000)
