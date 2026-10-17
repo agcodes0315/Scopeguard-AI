@@ -1,589 +1,168 @@
-﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="ScopeGuard AI helps freelance developers detect scope changes, review agreements, and remember decisions using Gemma and FalkorDB.">
-  <title>ScopeGuard AI — Protect the Work</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ScopeGuard AI helps freelance developers handle scope changes through agreement evidence, human-reviewed decisions, and FalkorDB memory.">
+  <meta name="theme-color" content="#0b1416">
+  <title>ScopeGuard AI | Evidence before extra work</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      --page: #D9D28B;
-      --section: #B2BD7E;
-      --step: #F2F3DF;
-      --feature: #E5EBCB;
-      --olive: #8E9162;
-      --forest: #6A795D;
-      --ink: #1F2B1E;
-      --muted: #364630;
-      --border: #99A674;
-      --shadow: 0 10px 26px rgba(31,43,30,.07);
+      color-scheme: dark;
+      --bg:#0b1416; --surface:#101f22; --surface-2:#14272a; --raised:#192f31;
+      --edge:#294144; --muted:#9eb5b6; --text:#ecf4ef; --quiet:#c1d0c8;
+      --sage:#a9c6a6; --olive:#768d77; --sea:#6fb3a8; --gold:#d4c18b;
+      --danger:#e0a59b; --sidebar:rgba(10,22,24,.92);
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      background: var(--page);
-      color: var(--ink);
-      font-family: "Roboto", Arial, sans-serif;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button, input, select, textarea {
-      font-family: inherit;
-    }
-
-    main {
-      width: min(1220px, calc(100% - 40px));
-      margin: auto;
-      padding: 36px 0 60px;
-    }
-
-    .hero-card,
-    .section-card,
-    .cta-card {
-      background: var(--section);
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      box-shadow: var(--shadow);
-    }
-
-    /* HERO */
-
-    .hero-card {
-      padding: clamp(28px, 5vw, 52px);
-      margin-bottom: 32px;
-    }
-
-    .eyebrow {
-      margin: 0 0 22px;
-      color: #526348;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    h1 {
-      max-width: 1000px;
-      margin: 0 0 28px;
-      font-size: clamp(44px, 7vw, 86px);
-      line-height: 1.08;
-      letter-spacing: -2px;
-      font-weight: 900;
-    }
-
-    h1 .accent {
-      display: block;
-      color: #536548;
-    }
-
-    .lead {
-      max-width: 860px;
-      margin: 0;
-      font-size: clamp(17px, 2vw, 21px);
-      color: var(--muted);
-      line-height: 1.75;
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 30px;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 52px;
-      padding: 12px 24px;
-      border-radius: 12px;
-      border: 1px solid transparent;
-      font-size: 15px;
-      font-weight: 800;
-      transition: background .2s ease, transform .2s ease;
-    }
-
-    .button:hover {
-      transform: translateY(-2px);
-    }
-
-    .button.primary {
-      background: #536548;
-      color: #FFFFFF;
-    }
-
-    .button.primary:hover {
-      background: #405139;
-    }
-
-    .button.secondary {
-      background: #EFF1D7;
-      color: var(--ink);
-      border-color: #C5CDA6;
-    }
-
-    .button.secondary:hover {
-      background: #E5EBCB;
-    }
-
-    /* SECTIONS */
-
-    .section-card {
-      padding: 34px;
-      margin-bottom: 30px;
-    }
-
-    .section-heading {
-      margin: 0 0 12px;
-      font-size: clamp(27px, 3.5vw, 39px);
-      line-height: 1.2;
-      font-weight: 800;
-      letter-spacing: -.8px;
-    }
-
-    .section-subtext {
-      margin: 0;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
-    }
-
-    /* FOUR WORKFLOW CARDS */
-
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 26px;
-    }
-
-    .info-card {
-      background: var(--step);
-      border: 1px solid #C9D0AE;
-      border-top: 4px solid var(--forest);
-      border-radius: 20px;
-      padding: 26px 23px;
-      min-height: 235px;
-      box-shadow: 0 4px 14px rgba(31,43,30,.04);
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
-
-    .info-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 20px rgba(31,43,30,.10);
-    }
-
-    .info-card:nth-child(1) {
-      border-top-color: #D9D28B;
-    }
-
-    .info-card:nth-child(2) {
-      border-top-color: #B2BD7E;
-    }
-
-    .info-card:nth-child(3) {
-      border-top-color: #8E9162;
-    }
-
-    .info-card:nth-child(4) {
-      border-top-color: #6A795D;
-    }
-
-    .info-card h3 {
-      margin: 0 0 17px;
-      font-size: 20px;
-      font-weight: 800;
-      line-height: 1.38;
-      color: var(--ink);
-    }
-
-    .info-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.8;
-    }
-
-    /* WHY THIS MATTERS + FEATURES */
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 22px;
-      align-items: stretch;
-      margin-bottom: 30px;
-    }
-
-    .two-col > .section-card {
-      margin-bottom: 0;
-    }
-
-    .bullets {
-      margin: 23px 0 0;
-      padding-left: 23px;
-      color: var(--muted);
-      font-size: 16px;
-    }
-
-    .bullets li {
-      padding-left: 5px;
-      line-height: 1.7;
-    }
-
-    .bullets li + li {
-      margin-top: 12px;
-    }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .metric-card {
-      background: var(--feature);
-      border: 1px solid #BAC7A0;
-      border-radius: 20px;
-      padding: 25px 22px;
-      box-shadow: 0 4px 14px rgba(31,43,30,.04);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
-
-    .metric-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 20px rgba(31,43,30,.10);
-    }
-
-    .metric-value {
-      display: block;
-      margin-bottom: 14px;
-      color: var(--ink);
-      font-size: clamp(22px, 2.3vw, 29px);
-      font-weight: 900;
-      line-height: 1.2;
-      letter-spacing: -.4px;
-      overflow-wrap: anywhere;
-    }
-
-    .metric-label {
-      display: block;
-      color: var(--muted);
-      font-size: 15px;
-      font-weight: 500;
-      line-height: 1.65;
-    }
-
-    /* BOTTOM CTA */
-
-    .cta-card {
-      padding: 38px;
-      margin-top: 5px;
-    }
-
-    .cta-card p:not(.eyebrow) {
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.8;
-      max-width: 940px;
-    }
-
-    footer {
-      margin-top: 35px;
-      text-align: center;
-      color: #3D4B35;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 10px;
-    }
-
-    a:focus-visible {
-      outline: 3px solid var(--ink);
-      outline-offset: 4px;
-    }
-
-    /* RESPONSIVE */
-
-    @media (max-width: 1080px) {
-      .grid-4 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .two-col {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 680px) {
-      main {
-        width: calc(100% - 28px);
-        padding-top: 18px;
-      }
-
-      .hero-card,
-      .section-card,
-      .cta-card {
-        padding: 25px 21px;
-        border-radius: 20px;
-      }
-
-      .grid-4,
-      .metric-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .info-card {
-        min-height: auto;
-      }
-
-      h1 {
-        font-size: clamp(40px, 11vw, 62px);
-        letter-spacing: -1px;
-      }
-
-      .button-row {
-        flex-direction: column;
-      }
-
-      .button {
-        width: 100%;
-      }
-
-      .two-col {
-        gap: 18px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      .button,
-      .info-card,
-      .metric-card {
-        transition: none;
-      }
-
-      .button:hover,
-      .info-card:hover,
-      .metric-card:hover {
-        transform: none;
-      }
-    }
+    * {box-sizing:border-box}
+    html {scroll-behavior:smooth;scroll-padding-top:98px}
+    body {margin:0;font-family:Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;min-width:320px}
+    body::before {content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 78% 0%,rgba(51,108,94,.19),transparent 49%)}
+    a {color:inherit;text-decoration:none} button,input,select {font:inherit}
+    button {cursor:pointer} button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible {outline:3px solid var(--sage);outline-offset:3px}
+    .shell {max-width:1600px;margin:auto;display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}
+    .sidebar {background:var(--sidebar);border-right:1px solid var(--edge);padding:28px 15px;display:flex;flex-direction:column;gap:30px;position:sticky;top:0;height:100vh}
+    .identity {display:flex;align-items:center;gap:12px;padding:4px 10px}
+    .mark {width:42px;height:42px;flex:none;display:grid;place-items:center;background:linear-gradient(140deg,#719986,#3e645b);color:#fff;border-radius:13px;font-weight:900;font-size:21px;box-shadow:0 9px 25px #203f3670}
+    .identity strong {display:block;font-size:18px;letter-spacing:-.6px}
+    .identity small {display:block;font-size:11px;color:var(--muted)}
+    .side-caption {padding:0 13px;color:#728f8d;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px}
+    .side-nav {display:grid;gap:5px}
+    .side-nav a {padding:12px 13px;display:flex;gap:12px;align-items:center;border-radius:11px;font-size:13px;color:#b5cbc8;transition:background .15s}
+    .side-nav a:hover,.side-nav a.active {background:#244643;color:#fff}
+    .side-nav a.active {box-shadow:inset 3px 0 0 var(--sage)}
+    .side-nav svg {width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.75;flex:none}
+    .sidebar-bottom {margin-top:auto;padding:16px 12px;border-top:1px solid var(--edge);color:var(--muted);font-size:12px}
+    .online-dot {display:inline-block;width:7px;height:7px;border-radius:50%;background:#91c4a3;margin-right:7px}
+    .main {padding:30px clamp(18px,3vw,45px) 58px;min-width:0}
+    .topline {display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:29px}
+    .crumb {color:#c3d6ce;font-size:13px}.crumb b{color:#fff}
+    .top-right {display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .chip {border:1px solid var(--edge);border-radius:50px;background:#102529;color:#bcceca;font-size:11px;font-weight:700;padding:8px 12px}
+    .chip strong{color:var(--sage)}
+    .page-eyebrow {color:#94c1a7;font-size:12px;font-weight:900;letter-spacing:2.8px;text-transform:uppercase;margin:0 0 11px}
+    h1 {font-size:clamp(35px,4.5vw,54px);font-weight:850;letter-spacing:-1.7px;line-height:1.1;margin:0 0 15px}
+    h1 em {font-style:normal;color:var(--sage)}
+    .intro {color:var(--muted);max-width:880px;margin:0;font-size:15px;line-height:1.7}
+    .intro-actions {display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+    .btn {padding:11px 17px;border-radius:10px;border:1px solid var(--edge);font-weight:800;font-size:13px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .15s,transform .15s}
+    .btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--sage);color:#10201d;border-color:var(--sage)}.btn-primary:hover{background:#bfd7bd}
+    .btn-outline{background:#172b2d;color:var(--text)}.btn-outline:hover{background:#243d3d}
+    .trust-note {border:1px solid #46645b;background:#17352f;border-radius:12px;padding:14px 17px;color:#d1e5d8;margin-top:25px;font-size:12px;line-height:1.6}
+    .stats {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:31px 0 22px}
+    .stat,.panel {background:linear-gradient(155deg,#122529,#102024);border:1px solid var(--edge);border-radius:17px}
+    .stat {padding:22px 20px}.stat .stat-k {font-size:12px;color:#adc0be;font-weight:600;margin-bottom:9px}
+    .stat .stat-v {font-size:clamp(20px,2.4vw,29px);font-weight:850;line-height:1.2;letter-spacing:-.6px}.stat .stat-s {font-size:11px;color:#88b5a9;margin-top:10px}
+    .section-title {font-size:23px;font-weight:800;margin:0 0 6px;letter-spacing:-.5px}.section-desc{font-size:13px;color:var(--muted);margin:0 0 20px}
+    .panel {padding:24px;margin-bottom:20px;min-width:0}
+    .panel-accent {background:linear-gradient(117deg,#173e37,#16312f 72%,#112527);border-color:#34635a}
+    .badge {display:inline-block;font-size:10px;font-weight:900;letter-spacing:1.7px;text-transform:uppercase;color:#9fd3b0;margin-bottom:11px}
+    .feature-heading {font-size:25px;margin:0 0 10px;letter-spacing:-.6px}.feature-body{color:#c1d6cd;font-size:13px;max-width:830px;line-height:1.8}
+    .evidence-line {border-left:3px solid var(--sea);margin-top:18px;padding:7px 0 7px 15px;color:#e0eee3;font-size:13px}
+    .two-panel {display:grid;grid-template-columns:minmax(0,1.45fr) minmax(295px,1fr);gap:20px;align-items:stretch}
+    .two-panel>.panel {margin-bottom:20px}
+    .workflow {display:grid;gap:12px}
+    .step {display:flex;gap:13px;align-items:flex-start;background:#162b2d;border:1px solid var(--edge);padding:13px;border-radius:12px}
+    .step-n {width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;background:#29473d;color:#cbe5ce;font-weight:800;font-size:12px}
+    .step strong{font-size:13px;display:block}.step p{margin:3px 0 0;font-size:11px;color:var(--muted)}
+    .chart-area {display:grid;grid-template-columns:165px minmax(0,1fr);gap:16px;align-items:center;margin:23px 0 8px}
+    .donut {width:165px;height:165px;border-radius:50%;background:conic-gradient(var(--sage) 0 50%,var(--sea) 50% 75%,#668087 75% 100%);display:grid;place-items:center;position:relative}
+    .donut::before{content:"";width:117px;height:117px;border-radius:50%;background:#11252a;position:absolute}
+    .donut-center{z-index:1;position:relative;text-align:center}.donut-center strong{font-size:28px;display:block;line-height:1.05}.donut-center span{color:var(--muted);font-size:10px}
+    .legend{display:grid;gap:10px;font-size:12px}.legend>div{display:flex;justify-content:space-between;gap:8px;align-items:center;color:#d5e4dd}
+    .legend-label{display:flex;align-items:center;gap:8px}.swatch{width:9px;height:9px;border-radius:3px;flex:none}
+    .table-wrap{overflow-x:auto}.request-table{width:100%;border-collapse:collapse;text-align:left;font-size:12px;min-width:520px}
+    .request-table th {color:#9ab0ad;text-transform:uppercase;letter-spacing:.7px;font-size:10px;font-weight:800;padding:12px 11px;border-bottom:1px solid var(--edge)}
+    .request-table td {padding:15px 11px;border-bottom:1px solid #244043;color:#e0e9e3}.request-table tr:last-child td{border-bottom:0}
+    .status {display:inline-block;border-radius:50px;font-weight:800;font-size:10px;padding:5px 9px;white-space:nowrap}
+    .status.extra{background:#453d31;color:#ead4a9}.status.review{background:#293d49;color:#bdd3dc}.status.included{background:#234137;color:#afddc0}
+    .sample-tag {font-size:10px;color:var(--muted);margin-top:12px}
+    .calculator {display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}
+    .field label {display:block;color:#b7cbc3;font-size:11px;font-weight:800;margin-bottom:6px}.field input{width:100%;background:#0c1b1f;color:#ecf4ef;border:1px solid #335256;border-radius:9px;padding:11px 12px;min-width:0}
+    .calc-total {font-size:29px;letter-spacing:-.6px;font-weight:900;color:#b7d6b4;margin:8px 0 0}.calc-error{color:#e2aba1;font-size:11px;min-height:18px}
+    .cta {display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;padding:25px 26px;border-radius:18px;border:1px solid #38534c;background:#1c3432;margin-top:2px}
+    .cta h2{font-size:21px;margin:0 0 6px}.cta p{margin:0;color:#adc4b8;font-size:12px;max-width:700px}
+    .footer {color:#7f9995;font-size:11px;margin-top:24px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    @media(max-width:1150px){.stats{grid-template-columns:repeat(2,1fr)}.two-panel{grid-template-columns:1fr}}
+    @media(max-width:760px){.shell{display:block}.sidebar{height:auto;position:static;padding:13px 15px;gap:10px}.identity{padding:4px}.side-caption,.sidebar-bottom{display:none}.side-nav{display:flex;overflow-x:auto;gap:5px}.side-nav a{white-space:nowrap;padding:10px}.main{padding:24px 16px 40px}.chart-area{grid-template-columns:1fr;justify-items:start}}
+    @media(max-width:480px){.stats{grid-template-columns:1fr 1fr;gap:9px}.stat{padding:15px 12px}.stat .stat-v{font-size:18px}.panel{padding:18px}.calculator{grid-template-columns:1fr}.topline{margin-bottom:22px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
   </style>
 </head>
-
 <body>
-  <main>
-
-    <!-- HERO -->
-
-    <section class="hero-card">
-      <p class="eyebrow">Open-weight Gemma + FalkorDB</p>
-
-      <h1>
-        Protect the work.
-        <span class="accent">Recover the value.</span>
-      </h1>
-
-      <p class="lead">
-        ScopeGuard AI helps freelance web developers compare client
-        requests with project agreements, identify possible scope
-        changes and obtain human-reviewed approval.
-      </p>
-
-      <div class="button-row">
-        <a
-          class="button primary"
-          href="https://github.com/agcodes0315/Scopeguard-AI"
-          target="_blank"
-          rel="noopener noreferrer">
-          Explore the code
-        </a>
-
-        <a class="button secondary" href="#how-it-works">
-          See how it works
-        </a>
-      </div>
+<div class="shell">
+  <aside class="sidebar" aria-label="Site navigation">
+    <a class="identity" href="#overview" aria-label="ScopeGuard AI home"><div class="mark">S</div><div><strong>ScopeGuard <span style="color:var(--sage)">AI</span></strong><small>Scope intelligence workspace</small></div></a>
+    <div><div class="side-caption">Explore</div><nav class="side-nav">
+      <a class="active" href="#overview"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="5" rx="1"/><rect x="13" y="10" width="8" height="11" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/></svg>Overview</a>
+      <a href="#workflow"><svg viewBox="0 0 24 24"><path d="M5 5h14M5 12h14M5 19h14"/><circle cx="5" cy="5" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="5" cy="19" r="2"/></svg>Workflow</a>
+      <a href="#decision-memory"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><path d="m8 11 8-5m-8 7 8 5"/></svg>Decision memory</a>
+      <a href="#example-requests"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h8"/></svg>Example requests</a>
+      <a href="#proposal"><svg viewBox="0 0 24 24"><path d="M7 3h9l4 4v14H7zM16 3v5h4M10 12h7M10 16h7"/></svg>Proposal estimate</a>
+      <a href="#get-started"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM9 12h6m-3-3v6"/></svg>Run locally</a>
+    </nav></div>
+    <div class="sidebar-bottom"><div><span class="online-dot"></span>Public product showcase</div><div style="margin-top:8px">The hosted page does not run private AI or graph services.</div></div>
+  </aside>
+  <main class="main" id="overview">
+    <div class="topline"><div class="crumb">ScopeGuard AI <span style="color:#5d7975"> / </span> <b>Overview</b></div><div class="top-right"><span class="chip">Model: <strong>Gemma 3 4B</strong></span><span class="chip">Memory: <strong>FalkorDB</strong></span><span class="chip">Mode: <strong>Showcase</strong></span></div></div>
+    <p class="page-eyebrow">Freelancer scope intelligence</p>
+    <h1>Stop guessing what's <em>in scope.</em></h1>
+    <p class="intro">Turn a client’s “one small change” into a clear decision. ScopeGuard connects the original agreement, the new request, and reviewed project history—so freelancers can respond with evidence before promising more work.</p>
+    <div class="intro-actions"><a class="btn btn-primary" href="#workflow">Explore the workflow ↗</a><a class="btn btn-outline" href="https://github.com/agcodes0315/Scopeguard-AI" target="_blank" rel="noopener noreferrer">View source on GitHub ↗</a></div>
+    <div class="trust-note"><strong>Live site: visual walkthrough + synthetic examples.</strong> The complete agreement analysis, graph-backed replay, PDF proposal, and client approval workflow run in the local project. No customer agreements are uploaded or stored by this page.</div>
+    <section class="stats" aria-label="Product capabilities">
+      <article class="stat"><div class="stat-k">Core user</div><div class="stat-v">Freelancers</div><div class="stat-s">Fixed-scope website projects</div></article>
+      <article class="stat"><div class="stat-k">Analysis model</div><div class="stat-v">Gemma 3 4B</div><div class="stat-s">Local via Ollama</div></article>
+      <article class="stat"><div class="stat-k">Decision context</div><div class="stat-v">FalkorDB</div><div class="stat-s">Agreement-bound graph memory</div></article>
+      <article class="stat"><div class="stat-k">Approval safety</div><div class="stat-v">Human first</div><div class="stat-s">No automatic charges</div></article>
     </section>
-
-    <!-- WORKFLOW -->
-
-    <section id="how-it-works" class="section-card">
-      <h2 class="section-heading">
-        From request to resolution
-      </h2>
-
-      <p class="section-subtext">
-        ScopeGuard turns "one small change" into a structured,
-        explainable, human-reviewed workflow.
-      </p>
-
-      <div class="grid-4">
-
-        <article class="info-card">
-          <h3>01. Review the agreement</h3>
-          <p>
-            Identify the original deliverables, revision limits
-            and clauses that define what is already included in scope.
-          </p>
-        </article>
-
-        <article class="info-card">
-          <h3>02. Analyze with Gemma</h3>
-          <p>
-            Compare the client request against the agreement and
-            surface evidence-backed flags for included work,
-            extras or review-needed cases.
-          </p>
-        </article>
-
-        <article class="info-card">
-          <h3>03. Request approval</h3>
-          <p>
-            Prepare a clear human-priced proposal so the client
-            understands the additional work, effort and approval
-            needed before execution.
-          </p>
-        </article>
-
-        <article class="info-card">
-          <h3>04. Remember decisions</h3>
-          <p>
-            FalkorDB connects agreements, requests and past
-            decisions so the next similar request can be checked
-            against real project history.
-          </p>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- VALUE PROPOSITION -->
-
-    <section class="two-col">
-
-      <div class="section-card">
-        <h2 class="section-heading">Why this matters</h2>
-
-        <p class="section-subtext">
-          Freelancers often lose time and money when scope discussions
-          are scattered across chats, calls and vague verbal approvals.
-        </p>
-
-        <ul class="bullets">
-          <li>Helps identify potential missed billing opportunities for extra work</li>
-          <li>Creates evidence-backed, client-friendly communication</li>
-          <li>Helps avoid disputes around "included" versus "additional" requests</li>
-          <li>Builds reusable decision memory across project iterations</li>
-        </ul>
-      </div>
-
-      <div class="metric-grid">
-
-        <article class="metric-card">
-          <span class="metric-value">AI + Graph</span>
-          <span class="metric-label">
-            Open-weight Gemma for reasoning and FalkorDB for connected memory.
-          </span>
-        </article>
-
-        <article class="metric-card">
-          <span class="metric-value">Human Reviewed</span>
-          <span class="metric-label">
-            Final pricing and approval remain under human control.
-          </span>
-        </article>
-
-        <article class="metric-card">
-          <span class="metric-value">Traceable</span>
-          <span class="metric-label">
-            Agreement clauses, request evidence and reusable decisions stay linked.
-          </span>
-        </article>
-
-        <article class="metric-card">
-          <span class="metric-value">Freelancer First</span>
-          <span class="metric-label">
-            Built for solo web developers and small service businesses.
-          </span>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- GET STARTED -->
-
-    <section class="cta-card">
-      <p class="eyebrow">Explore the project</p>
-
-      <h2 class="section-heading">
-        Want to use the actual AI workflow?
-      </h2>
-
-      <p>
-        ScopeGuard's complete application currently runs locally
-        with Ollama and FalkorDB. It supports agreement uploads,
-        evidence-backed classification, graph memory, human pricing,
-        customer approval links and proposal PDF generation.
-      </p>
-
-      <p>
-        The publicly hosted page demonstrates the product idea.
-        Private project workflows are not exposed to the internet
-        without the necessary authentication and security controls.
-      </p>
-
-      <div class="button-row">
-
-        <a
-          class="button primary"
-          href="https://github.com/agcodes0315/Scopeguard-AI#readme"
-          target="_blank"
-          rel="noopener noreferrer">
-          Setup instructions
-        </a>
-
-        <a
-          class="button secondary"
-          href="https://github.com/agcodes0315/Scopeguard-AI"
-          target="_blank"
-          rel="noopener noreferrer">
-          Explore source code
-        </a>
-
-      </div>
-    </section>
-
-    <footer>
-      ScopeGuard AI · Open-source, human-reviewed scope intelligence ·
-      Demonstration only · Not legal advice
-    </footer>
-
+    <section class="panel panel-accent" id="decision-memory"><span class="badge">The differentiator · Decision replay</span><h2 class="feature-heading">One request. Its full promise history.</h2><p class="feature-body">A Testimonials page may be outside a five-page agreement today. But if the freelancer later records a reviewed, agreement-specific exception, ScopeGuard can retrieve that history for a matching request. An unrelated checkout request or a changed agreement must not inherit that exception automatically.</p><div class="evidence-line"><strong>Graph evidence path:</strong> Project → Active agreement → Relevant clause → Client request → Human-reviewed exception. Previous approval remains subject to verification.</div></section>
+    <div class="two-panel">
+      <section class="panel" id="workflow"><h2 class="section-title">From request to resolution</h2><p class="section-desc">Four steps, one evidence-backed workflow.</p><div class="workflow">
+        <div class="step"><span class="step-n">01</span><div><strong>Review the agreement</strong><p>Load the original scope and its revision limits.</p></div></div>
+        <div class="step"><span class="step-n">02</span><div><strong>Analyze with Gemma</strong><p>Flag potential extras, included work, or uncertainty.</p></div></div>
+        <div class="step"><span class="step-n">03</span><div><strong>Prepare client approval</strong><p>Freelancer chooses hours and rate; client reviews.</p></div></div>
+        <div class="step"><span class="step-n">04</span><div><strong>Remember reviewed decisions</strong><p>FalkorDB retrieves relevant agreement-bound history.</p></div></div>
+      </div></section>
+      <section class="panel" id="chart"><h2 class="section-title">Sample decision mix</h2><p class="section-desc">Four fictional requests for illustration—not measured accuracy.</p><div class="chart-area"><div class="donut" role="img" aria-label="Four fictional requests: two potential extras, one needs review, one included"><div class="donut-center"><strong>4</strong><span>sample requests</span></div></div><div class="legend"><div><span class="legend-label"><i class="swatch" style="background:var(--sage)"></i>Potential extra</span><b>2</b></div><div><span class="legend-label"><i class="swatch" style="background:var(--sea)"></i>Needs review</span><b>1</b></div><div><span class="legend-label"><i class="swatch" style="background:#668087"></i>Included</span><b>1</b></div></div></div><p class="sample-tag">Illustrative categories only. Real classifications need agreement evidence and human review.</p></section>
+    </div>
+    <div class="two-panel">
+      <section class="panel" id="example-requests"><h2 class="section-title">Example client requests</h2><p class="section-desc">Fictional scope cases that show the problem in plain language.</p><div class="table-wrap"><table class="request-table"><thead><tr><th>Client asks for</th><th>Example outcome</th><th>Next step</th></tr></thead><tbody>
+        <tr><td>Sixth Testimonials page</td><td><span class="status extra">Potential extra</span></td><td>Review / estimate</td></tr>
+        <tr><td>Third revision round</td><td><span class="status extra">Potential extra</span></td><td>Review / estimate</td></tr>
+        <tr><td>Ambiguous design polish</td><td><span class="status review">Needs review</span></td><td>Clarify scope</td></tr>
+        <tr><td>Existing agreed Contact page</td><td><span class="status included">Included</span></td><td>Work to agreement</td></tr>
+      </tbody></table></div><p class="sample-tag">Rows are written examples, not actual live Gemma responses.</p></section>
+      <section class="panel" id="proposal"><h2 class="section-title">Illustrative change estimate</h2><p class="section-desc">Human-controlled pricing. This calculator does not create or send a proposal.</p><div class="calculator"><div class="field"><label for="hours">Extra hours</label><input id="hours" type="number" min="0" max="1000" step="0.5" value="4" inputmode="decimal"></div><div class="field"><label for="rate">Rate · INR/hour</label><input id="rate" type="number" min="0" max="1000000" step="1" value="1000" inputmode="decimal"></div></div><div style="color:var(--muted);font-size:12px">Example proposal total</div><output class="calc-total" id="total" aria-live="polite">₹4,000</output><p class="calc-error" id="calc-error" role="status"></p><p class="sample-tag">Actual approval links and PDFs are available in the local application; this is an illustrative estimate.</p></section>
+    </div>
+    <section class="cta" id="get-started"><div><h2>Explore the real implementation</h2><p>Run ScopeGuard locally with FastAPI, Ollama/Gemma and FalkorDB. The GitHub README provides setup steps, tests and safety limitations.</p></div><a class="btn btn-primary" href="https://github.com/agcodes0315/Scopeguard-AI#readme" target="_blank" rel="noopener noreferrer">Open setup guide ↗</a></section>
+    <footer class="footer"><span>ScopeGuard AI · Open-source prototype · Synthetic public showcase</span><span>Human-reviewed decisions · Not legal advice · No automatic billing</span></footer>
   </main>
+</div>
+<script>
+  (() => {
+    'use strict';
+    const hours = document.getElementById('hours');
+    const rate = document.getElementById('rate');
+    const total = document.getElementById('total');
+    const error = document.getElementById('calc-error');
+    const format = new Intl.NumberFormat('en-IN', {style:'currency',currency:'INR',maximumFractionDigits:2});
+    function recalc(){
+      const h = Number(hours.value), r = Number(rate.value);
+      if(hours.value.trim()==='' || rate.value.trim()==='' || !Number.isFinite(h) || !Number.isFinite(r) || h < 0 || r < 0 || h > 1000 || r > 1000000){
+        total.textContent='—'; error.textContent='Enter valid non-negative hours and rate.'; return;
+      }
+      total.textContent=format.format(h*r);error.textContent='';
+    }
+    hours.addEventListener('input',recalc);rate.addEventListener('input',recalc);recalc();
+    const links = [...document.querySelectorAll('.side-nav a')];
+    links.forEach(a=>a.addEventListener('click',()=>{
+      links.forEach(link=>link.classList.remove('active'));a.classList.add('active');
+    }));
+  })();
+</script>
 </body>
 </html>
