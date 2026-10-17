@@ -4,296 +4,852 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="ScopeGuard AI helps freelancers review scope changes using local Gemma and FalkorDB.">
-  <title>ScopeGuard AI — Protect the Work</title>
+  <meta name="description" content="ScopeGuard Atlas helps freelancers compare project agreements with client requests, review scope changes, and remember decisions with Gemma and FalkorDB.">
+  <title>ScopeGuard Atlas | Protect the Work</title>
 
   <style>
     :root {
-      --background: #D9D28B;
+      --gold: #D9D28B;
       --sage: #B2BD7E;
       --olive: #8E9162;
       --forest: #6A795D;
-      --text: #263223;
-      --muted: #47533D;
+      --ink: #263223;
+      --muted: #4C5944;
       --white: #FFFFFF;
+      --border: #C8CCAD;
+      --shadow: 0 14px 34px rgba(43, 52, 32, 0.07);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--background);
-      color: var(--text);
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--gold);
+      color: var(--ink);
       line-height: 1.65;
     }
 
-    main {
-      max-width: 1180px;
+    a { color: inherit; }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button { cursor: pointer; }
+
+    :focus-visible {
+      outline: 3px solid var(--forest);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 40px));
       margin: 0 auto;
-      padding: 72px 28px 56px;
+    }
+
+    .navbar {
+      background: rgba(255,255,255,0.96);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      min-height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-size: 21px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand span { color: var(--forest); }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .nav-links a:hover { color: var(--forest); }
+
+    main { padding: 45px 0 70px; }
+
+    .hero-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 23px;
+      padding: clamp(25px, 5vw, 62px);
+      box-shadow: var(--shadow);
+      margin-bottom: 48px;
     }
 
     .eyebrow {
-      color: #435439;
+      color: var(--forest);
+      font-size: 12px;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 3px;
-      font-size: 13px;
-      font-weight: 800;
     }
 
     h1 {
-      font-size: clamp(42px, 7vw, 80px);
-      line-height: 1.12;
+      font-size: clamp(40px, 6.7vw, 78px);
       letter-spacing: -2px;
-      margin: 34px 0;
+      line-height: 1.12;
+      margin: 23px 0 27px;
     }
 
-    h1 span {
-      color: var(--forest);
-    }
+    h1 span { color: var(--forest); }
 
     h2 {
-      margin: 0 0 18px;
-      font-size: 28px;
+      font-size: clamp(26px, 3vw, 36px);
+      line-height: 1.25;
+      margin: 0 0 15px;
     }
 
+    h3 { margin-top: 0; }
+
     .lead {
-      max-width: 760px;
-      font-size: 20px;
       color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 32px;
+      font-size: 19px;
+      max-width: 780px;
+      margin-bottom: 28px;
     }
 
     .actions {
       display: flex;
+      gap: 12px;
       flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 42px;
+      margin-top: 22px;
     }
 
-    .button {
+    .btn {
       display: inline-block;
-      padding: 13px 24px;
-      border-radius: 10px;
+      text-align: center;
+      border: 0;
+      border-radius: 11px;
       background: var(--forest);
-      color: var(--white);
+      color: white;
+      padding: 13px 23px;
+      font-size: 15px;
       font-weight: 700;
       text-decoration: none;
-      transition: background 0.2s ease, transform 0.2s ease;
+      transition: transform .18s, background .18s;
     }
 
-    .button:hover {
-      background: #526348;
+    .btn:hover {
+      background: #536449;
       transform: translateY(-2px);
     }
 
-    .button.secondary {
+    .btn.secondary {
       background: var(--sage);
-      color: var(--text);
+      color: var(--ink);
     }
 
-    .button.secondary:hover {
-      background: var(--olive);
-      color: var(--white);
+    .btn.secondary:hover { background: var(--olive); }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .section { margin: 58px 0; }
+
+    .section-heading {
+      margin-bottom: 24px;
+      max-width: 800px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 16px;
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 20px;
-      margin: 28px 0 48px;
+      gap: 18px;
     }
 
     .card {
       background: var(--white);
-      border: 1px solid rgba(68, 82, 54, 0.22);
-      border-radius: 16px;
-      padding: 28px;
-      min-height: 235px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 25px;
+      min-height: 215px;
+      box-shadow: var(--shadow);
     }
 
     .card h3 {
-      margin: 0 0 22px;
-      font-size: 20px;
-      line-height: 1.5;
+      font-size: 19px;
+      line-height: 1.45;
+      margin-bottom: 20px;
     }
 
     .card p {
-      color: var(--muted);
       margin: 0;
+      color: var(--muted);
     }
 
-    .grid .card:nth-child(1) {
-      border-top: 5px solid var(--background);
+    .card:nth-child(1) { border-top: 5px solid var(--gold); }
+    .card:nth-child(2) { border-top: 5px solid var(--sage); }
+    .card:nth-child(3) { border-top: 5px solid var(--olive); }
+    .card:nth-child(4) { border-top: 5px solid var(--forest); }
+
+    .feature-panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: clamp(22px, 4vw, 38px);
+      box-shadow: var(--shadow);
     }
 
-    .grid .card:nth-child(2) {
-      border-top: 5px solid var(--sage);
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
     }
 
-    .grid .card:nth-child(3) {
-      border-top: 5px solid var(--olive);
+    .story {
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #FAFAF3;
     }
 
-    .grid .card:nth-child(4) {
-      border-top: 5px solid var(--forest);
+    .story h3 { margin-bottom: 10px; }
+    .story p { margin: 0; color: var(--muted); }
+
+    .demo-intro {
+      padding: 15px 18px;
+      border-left: 4px solid var(--forest);
+      border-radius: 8px;
+      background: #EEF0DC;
+      color: var(--ink);
+      margin-bottom: 24px;
     }
 
-    .implementation {
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .field { margin-bottom: 18px; }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ADB69C;
+      border-radius: 10px;
+      background: #FFFFFF;
+      color: var(--ink);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 145px;
+      line-height: 1.65;
+    }
+
+    textarea[readonly] {
+      background: #F7F8EF;
+    }
+
+    .result {
+      background: #F5F7EC;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      margin-top: 24px;
+    }
+
+    .result[hidden] { display: none; }
+
+    .result h3 { margin-bottom: 14px; }
+
+    .pill {
+      display: inline-block;
+      background: #E9DCAB;
+      color: #544513;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 11px;
+      border-radius: 99px;
+      margin-bottom: 12px;
+    }
+
+    .pill.included {
+      background: #DCE9CC;
+      color: #28512C;
+    }
+
+    .evidence {
+      background: white;
+      padding: 17px;
+      border-left: 4px solid var(--olive);
+      border-radius: 8px;
+      margin-top: 14px;
+    }
+
+    .evidence p { margin: 8px 0; }
+
+    .muted { color: var(--muted); }
+
+    .price {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--forest);
+      margin: 8px 0;
+    }
+
+    .fineprint {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 17px;
+      margin-top: 24px;
+    }
+
+    .tech {
+      background: #FFFFFF;
+      padding: 20px;
+      border-radius: 13px;
+      border: 1px solid var(--border);
+    }
+
+    .tech strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .tech p { margin: 0; color: var(--muted); }
+
+    .cta {
       background: var(--sage);
       border: 1px solid var(--olive);
-      border-radius: 18px;
-      padding: 36px;
-      margin-top: 32px;
+      border-radius: 20px;
+      padding: clamp(24px, 4vw, 40px);
     }
 
-    .implementation p {
-      color: var(--text);
-      max-width: 900px;
-    }
+    .cta p { max-width: 800px; }
 
     footer {
+      padding: 30px 0 50px;
+      border-top: 1px solid rgba(38,50,35,.2);
       color: var(--muted);
-      margin-top: 55px;
       font-size: 14px;
     }
 
-    a:focus-visible {
-      outline: 3px solid var(--text);
-      outline-offset: 4px;
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
     }
 
-    @media (max-width: 900px) {
-      .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
     }
 
-    @media (max-width: 560px) {
-      main {
-        padding: 42px 20px;
+    @media (max-width: 940px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 680px) {
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px 0;
       }
 
-      h1 {
-        letter-spacing: -1px;
-      }
+      .nav-links { gap: 13px; }
 
-      .grid {
+      .grid, .demo-grid,
+      .story-grid, .tech-grid {
         grid-template-columns: 1fr;
       }
 
-      .card {
-        min-height: auto;
-      }
+      main { padding-top: 25px; }
 
-      .implementation {
-        padding: 24px;
-      }
+      h1 { letter-spacing: -1px; }
+
+      .card { min-height: auto; }
     }
   </style>
 </head>
 
 <body>
-  <main>
-    <p class="eyebrow">Open-weight Gemma + FalkorDB</p>
 
-    <h1>
-      Protect the work.
-      <br>
-      <span>Recover the value.</span>
-    </h1>
+  <header class="navbar">
+    <nav class="container nav-inner" aria-label="Main navigation">
+      <a href="#home" class="brand">◇ ScopeGuard <span>Atlas</span></a>
 
-    <p class="lead">
-      ScopeGuard AI helps freelance web developers compare client
-      requests with project agreements, identify possible scope
-      changes, and obtain human-reviewed approval.
-    </p>
+      <div class="nav-links">
+        <a href="#problem">Problem</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#demo">Try demo</a>
+        <a href="#technology">Technology</a>
+        <a href="#get-started">Get started</a>
+      </div>
+    </nav>
+  </header>
 
-    <div class="actions">
-      <a
-        class="button"
-        href="https://github.com/agcodes0315/Scopeguard-AI"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Explore the code
-      </a>
+  <main class="container">
 
-      <a class="button secondary" href="#how-it-works">
-        See how it works
-      </a>
-    </div>
+    <!-- HERO -->
+    <section class="hero-card" id="home">
+      <p class="eyebrow">Open-weight Gemma + FalkorDB</p>
 
-    <section id="how-it-works">
-      <h2>From request to resolution</h2>
+      <h1>
+        Protect the work.<br>
+        <span>Recover the value.</span>
+      </h1>
+
+      <p class="lead">
+        A smarter way for freelance developers to understand scope
+        changes, remember past agreements, and avoid unnecessary
+        disputes with clients.
+      </p>
+
+      <div class="actions">
+        <a href="#demo" class="btn">Try interactive demo</a>
+        <a href="#how-it-works" class="btn secondary">See how it works</a>
+        <a href="https://github.com/agcodes0315/Scopeguard-AI"
+           target="_blank" rel="noopener noreferrer"
+           class="btn secondary">View GitHub</a>
+      </div>
+
+      <p class="fineprint">
+        Open-source hackathon MVP. The online demo uses synthetic
+        examples; the complete Gemma and FalkorDB application runs locally.
+      </p>
+    </section>
+
+    <!-- PROBLEM -->
+    <section class="section" id="problem">
+      <div class="section-heading">
+        <p class="eyebrow">The problem</p>
+        <h2>One small change can create a big misunderstanding.</h2>
+        <p>
+          A freelancer agrees to build five website pages.
+          The client later asks for a sixth page.
+          Is that already included, or should it be separately approved?
+        </p>
+      </div>
+
+      <div class="feature-panel">
+        <div class="story-grid">
+          <div class="story">
+            <h3>Without ScopeGuard</h3>
+            <p>
+              Freelancers search through contracts and conversations,
+              manually identify changes, remember earlier exceptions,
+              calculate estimates, and request approvals.
+            </p>
+          </div>
+
+          <div class="story">
+            <h3>With ScopeGuard</h3>
+            <p>
+              Review the agreement and client request together,
+              check relevant previous decisions, prepare a transparent
+              estimate, and record the customer's response.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKFLOW -->
+    <section class="section" id="how-it-works">
+      <div class="section-heading">
+        <p class="eyebrow">Simple workflow</p>
+        <h2>From request to resolution</h2>
+      </div>
 
       <div class="grid">
         <article class="card">
           <h3>01. Review the agreement</h3>
           <p>
-            Identify relevant scope terms and included revisions.
+            Identify relevant scope terms, included work,
+            and revision limits.
           </p>
         </article>
 
         <article class="card">
           <h3>02. Analyze with Gemma</h3>
           <p>
-            Flag possible extra work with supporting evidence.
+            Identify possible extra work and review
+            supporting agreement evidence.
           </p>
         </article>
 
         <article class="card">
           <h3>03. Request approval</h3>
           <p>
-            Prepare a human-priced proposal for client review.
+            The freelancer estimates time and cost.
+            The client reviews a change proposal.
           </p>
         </article>
 
         <article class="card">
           <h3>04. Remember decisions</h3>
           <p>
-            FalkorDB connects projects, agreements and decisions.
+            FalkorDB connects projects, agreements,
+            client requests, and reviewed decisions.
           </p>
         </article>
       </div>
     </section>
 
-    <section class="implementation">
-      <h2>See the real implementation</h2>
+    <!-- INTERACTIVE STATIC DEMO -->
+    <section class="section" id="demo">
+      <div class="feature-panel">
+        <div class="section-heading">
+          <p class="eyebrow">Try it yourself</p>
+          <h2>Explore a scope-change example</h2>
+          <p>
+            Choose a fictional client request and see how ScopeGuard's
+            decision process works.
+          </p>
+        </div>
 
-      <p>
-        The complete local application runs Gemma 3 4B through
-        Ollama and uses FalkorDB for connected decision memory.
-      </p>
+        <div class="demo-intro">
+          <strong>Guided demonstration only.</strong>
+          These are predefined examples, not live Gemma predictions
+          or FalkorDB database results. No data is sent or saved.
+        </div>
 
-      <p>
-        This public site is a project showcase. Local AI inference
-        and private project workflows are not hosted on this page.
-      </p>
+        <div class="demo-grid">
 
-      <a
-        class="button"
-        href="https://github.com/agcodes0315/Scopeguard-AI"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        View installation instructions
-      </a>
+          <div>
+            <div class="field">
+              <label for="demo-agreement">Original project agreement</label>
+              <textarea id="demo-agreement" readonly>The client commissions a five-page website: Home, About, Menu, Gallery, and Contact. Two rounds of revisions are included. Additional pages and further revisions require a separate estimate and client approval.</textarea>
+            </div>
+          </div>
+
+          <div>
+            <div class="field">
+              <label for="demo-request">Choose a client request</label>
+              <select id="demo-request">
+                <option value="testimonials">
+                  Add a sixth Testimonials page
+                </option>
+                <option value="revision">
+                  Request a third revision round
+                </option>
+                <option value="included">
+                  Update text on the Contact page
+                </option>
+                <option value="checkout">
+                  Add an online store with payment checkout
+                </option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="demo-message">Client message</label>
+              <textarea id="demo-message" readonly></textarea>
+            </div>
+
+            <button class="btn" id="check-demo" type="button">
+              Review example
+            </button>
+          </div>
+        </div>
+
+        <div id="demo-result" class="result" hidden aria-live="polite">
+          <span id="demo-badge" class="pill"></span>
+
+          <h3 id="demo-heading"></h3>
+
+          <p id="demo-reason"></p>
+
+          <div class="evidence">
+            <strong>Relevant agreement evidence</strong>
+            <p id="demo-evidence"></p>
+          </div>
+
+          <div class="evidence">
+            <strong>Decision memory example</strong>
+            <p id="demo-memory"></p>
+          </div>
+
+          <div id="demo-pricing" hidden>
+            <h3 style="margin-top:25px">Illustrative change estimate</h3>
+
+            <div class="demo-grid">
+              <div class="field">
+                <label for="demo-hours">Estimated extra hours</label>
+                <input id="demo-hours" type="number"
+                       value="4" min="0" max="1000" step="0.5">
+              </div>
+
+              <div class="field">
+                <label for="demo-rate">Hourly rate (INR)</label>
+                <input id="demo-rate" type="number"
+                       value="1000" min="1" max="1000000" step="1">
+              </div>
+            </div>
+
+            <p class="fineprint">Illustrative cost only. No proposal is created.</p>
+            <div class="price" id="demo-total">₹4,000</div>
+            <p class="muted">
+              In the complete local application, the freelancer can
+              create a proposal and the client can review a
+              tokenized approval link.
+            </p>
+          </div>
+
+          <div class="actions">
+            <a href="#get-started" class="btn secondary">
+              Explore the full application
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <footer>
-      ScopeGuard AI — Open-source, human-reviewed scope intelligence.
-      Demonstration only. Not legal advice.
-    </footer>
+    <!-- TECHNOLOGY -->
+    <section class="section" id="technology">
+      <div class="section-heading">
+        <p class="eyebrow">Under the hood</p>
+        <h2>Built for evidence, memory and human control.</h2>
+        <p>
+          The complete local application combines open-weight
+          AI with a connected knowledge graph and a structured
+          approval workflow.
+        </p>
+      </div>
+
+      <div class="tech-grid">
+        <div class="tech">
+          <strong>Gemma 3 4B + Ollama</strong>
+          <p>Local AI inference for agreement and request analysis.</p>
+        </div>
+
+        <div class="tech">
+          <strong>FalkorDB</strong>
+          <p>Graph-based agreement context and reviewed decision memory.</p>
+        </div>
+
+        <div class="tech">
+          <strong>FastAPI + Python</strong>
+          <p>Backend validation, analysis routes and workflow endpoints.</p>
+        </div>
+
+        <div class="tech">
+          <strong>SQLite + ReportLab</strong>
+          <p>Local proposal records, customer decisions and PDF exports.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GET STARTED -->
+    <section class="section" id="get-started">
+      <div class="cta">
+        <p class="eyebrow">Explore the project</p>
+
+        <h2>Want to use the actual AI workflow?</h2>
+
+        <p>
+          ScopeGuard's complete application currently runs locally
+          with Ollama and FalkorDB. It supports agreement uploads,
+          evidence-backed classification, graph memory, human pricing,
+          customer approval links and proposal PDF generation.
+        </p>
+
+        <p>
+          The publicly hosted page demonstrates the product idea.
+          Private project workflows are not exposed to the internet
+          without the necessary authentication and security controls.
+        </p>
+
+        <div class="actions">
+          <a class="btn"
+             href="https://github.com/agcodes0315/Scopeguard-AI#readme"
+             target="_blank" rel="noopener noreferrer">
+            Setup instructions
+          </a>
+
+          <a class="btn secondary"
+             href="https://github.com/agcodes0315/Scopeguard-AI"
+             target="_blank" rel="noopener noreferrer">
+            Explore source code
+          </a>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <strong>ScopeGuard Atlas</strong>
+        <p>
+          Open-source AI challenge prototype.
+          Synthetic demonstration only. Not legal advice.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="https://github.com/agcodes0315"
+           target="_blank" rel="noopener noreferrer">GitHub</a>
+
+        <a href="https://github.com/agcodes0315/Scopeguard-AI"
+           target="_blank" rel="noopener noreferrer">Repository</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    "use strict";
+
+    const examples = {
+      testimonials: {
+        message: "Please add a new Testimonials page as the sixth page of our cafe website.",
+        label: "POTENTIAL EXTRA",
+        heading: "A sixth page may require separate approval.",
+        reason: "The requested Testimonials page is not among the five agreed website pages.",
+        evidence: "Additional pages and further revisions require a separate estimate and client approval.",
+        memory: "In the real FalkorDB workflow, the system checks whether a matching human-reviewed exception exists under the active agreement. A previous waiver would still need its conditions verified.",
+        billable: true
+      },
+
+      revision: {
+        message: "We already used two revision rounds. Could we have a third round to redesign the Home page?",
+        label: "POTENTIAL EXTRA",
+        heading: "An additional revision round may be extra work.",
+        reason: "The agreement includes two rounds; the client is asking for a third.",
+        evidence: "Two rounds of revisions are included. Additional pages and further revisions require a separate estimate and client approval.",
+        memory: "A previous revision exception would only be relevant if its request and agreement-version conditions matched.",
+        billable: true
+      },
+
+      included: {
+        message: "Could you correct the contact email displayed on the existing Contact page?",
+        label: "NEEDS REVIEW",
+        heading: "Check whether this correction is already covered.",
+        reason: "The Contact page is included, but this agreement does not explicitly define whether post-delivery corrections are included. Human review is needed.",
+        evidence: "The client commissions a five-page website: Home, About, Menu, Gallery, and Contact.",
+        memory: "A saved prior decision might clarify this exact correction, but no graph lookup occurs in this browser demo.",
+        billable: false
+      },
+
+      checkout: {
+        message: "Please add an online store with shopping cart and payment checkout.",
+        label: "POTENTIAL EXTRA",
+        heading: "An online store is beyond the named website pages.",
+        reason: "The original agreement lists a five-page website and does not include e-commerce or payment checkout.",
+        evidence: "The client commissions a five-page website: Home, About, Menu, Gallery, and Contact.",
+        memory: "A Testimonials-page waiver must not be reused for this unrelated checkout request. The live graph implementation checks applicable history separately.",
+        billable: true
+      }
+    };
+
+    const requestSelect = document.getElementById("demo-request");
+    const messageBox = document.getElementById("demo-message");
+    const resultBox = document.getElementById("demo-result");
+    const badge = document.getElementById("demo-badge");
+    const heading = document.getElementById("demo-heading");
+    const reason = document.getElementById("demo-reason");
+    const evidence = document.getElementById("demo-evidence");
+    const memory = document.getElementById("demo-memory");
+    const pricing = document.getElementById("demo-pricing");
+    const hoursInput = document.getElementById("demo-hours");
+    const rateInput = document.getElementById("demo-rate");
+    const totalOutput = document.getElementById("demo-total");
+
+    const money = new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 2
+    });
+
+    function showMessage() {
+      messageBox.value = examples[requestSelect.value].message;
+      resultBox.hidden = true;
+    }
+
+    function calculate() {
+      const hours = Number(hoursInput.value);
+      const rate = Number(rateInput.value);
+
+      if (
+        !Number.isFinite(hours) ||
+        !Number.isFinite(rate) ||
+        hours < 0 ||
+        rate < 0
+      ) {
+        totalOutput.textContent = "Enter valid numbers";
+        return;
+      }
+
+      totalOutput.textContent = money.format(hours * rate);
+    }
+
+    function reviewExample() {
+      const item = examples[requestSelect.value];
+
+      badge.textContent = item.label;
+      badge.className = "pill" +
+        (item.label === "NEEDS REVIEW" ? " included" : "");
+
+      heading.textContent = item.heading;
+      reason.textContent = item.reason;
+      evidence.textContent = item.evidence;
+      memory.textContent = item.memory;
+
+      pricing.hidden = !item.billable;
+      resultBox.hidden = false;
+
+      calculate();
+      resultBox.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+    }
+
+    requestSelect.addEventListener("change", showMessage);
+
+    document.getElementById("check-demo")
+      .addEventListener("click", reviewExample);
+
+    hoursInput.addEventListener("input", calculate);
+    rateInput.addEventListener("input", calculate);
+
+    showMessage();
+  </script>
 </body>
 </html>
