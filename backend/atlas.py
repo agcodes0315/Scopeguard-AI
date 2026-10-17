@@ -1,11 +1,9 @@
 '''ScopeGuard Atlas: explicit, agreement-version-bound graph exceptions.
-
 Every decision remains advisory. This extension never creates an invoice or
 claims that freelancer confirmation is equivalent to customer consent.
 Graph storage is mandatory; no fallback to SQLite is implemented.
 '''
 from __future__ import annotations
-
 import hashlib
 import secrets
 from typing import Literal
@@ -14,8 +12,6 @@ from pydantic import BaseModel, Field
 from backend.graph_context import get_graph
 
 router = APIRouter(prefix="/api/atlas", tags=["ScopeGuard Atlas"])
-
-
 def fingerprint(text: str) -> str:
     return hashlib.sha256(" ".join(text.casefold().split()).encode("utf-8")).hexdigest()
 
