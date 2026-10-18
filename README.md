@@ -591,8 +591,6 @@ Generated files such as `.venv/`, `__pycache__/`, `.pytest_cache/`, local `data/
 **Public product showcase:** https://scopeguard-ai-508d.onrender.com/  
 **Hosted agent (demo login required):** https://scopeguard-atlas-api.onrender.com/
 
-**Demo video:** _Add your published video link after recording._
-
 **Project blog:** https://lnkd.in/p/gg6Fxs8u
 
 **Competition provenance:** The original ScopeGuard contract-analysis MVP preceded the event. The FalkorDB agreement/decision memory and Atlas graph-informed action work were the Graph Hacks additions. The public Git history is the authoritative record; final eligibility and judging are determined by organizers.
