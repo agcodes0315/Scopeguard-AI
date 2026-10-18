@@ -227,10 +227,39 @@ Ignored generated directories such as `.venv/`, `.pytest_cache/`, `__pycache__/`
 
 **Agrima Saxena** Solo developer · Software engineering · Graph-based AI systems
 
-[![GitHub](https://img.shields.io/badge/GitHub-agcodes0315-181717?style=for-the-badge&logo=github)](https://github.com/agcodes0315)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Agrima_Saxena-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/agrima-saxena-142960426/)
-[![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:agrimalc@gmail.com)
 
+<table>
+<tr>
+
+<td width="60">
+<a href="https://www.linkedin.com/in/agrima-saxena-142960426/" title="LinkedIn">
+<img src="https://img.icons8.com/color/48/linkedin.png"
+     width="32"
+     height="32"
+     alt="LinkedIn">
+</a>
+</td>
+
+<td width="60">
+<a href="mailto:agrimalc@gmail.com" title="Email">
+<img src="https://img.icons8.com/color/48/gmail-new.png"
+     width="32"
+     height="32"
+     alt="Email">
+</a>
+</td>
+
+<td width="60">
+<a href="https://github.com/agcodes0315" title="GitHub">
+<img src="https://img.icons8.com/ios-glyphs/48/ffffff/github.png"
+     width="32"
+     height="32"
+     alt="GitHub">
+</a>
+</td>
+
+</tr>
+</table>
 **ScopeGuard makes the next action traceable to what was actually agreed not what the model happens to remember.**
 
 *If this project helps you think differently about agreement-bound agent memory, consider starring the repository.*
