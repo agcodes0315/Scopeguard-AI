@@ -252,7 +252,11 @@ For missing evidence use an empty string, and lean needs_review for ambiguity. E
 AGREEMENT:\n{body.agreement}\n\nCLIENT REQUESTS:\n{body.requests}"""
     raw = call_ollama(prompt)
     try:
-        parsed = json.loads(raw)
+        cleaned = raw.strip()
+        if cleaned.startswith("```"):
+            cleaned = re.sub(r"\A```(?:json)?[ \t]*\r?\n", "", cleaned, flags=re.IGNORECASE)
+            cleaned = re.sub(r"\r?\n```[ \t]*\Z", "", cleaned)
+        parsed = json.loads(cleaned)
         summary = str(parsed.get("summary", "Review the identified requests."))[:1500]
         items = []
         # With a single exploratory request, collapse multiple invented sub-items.
