@@ -73,6 +73,58 @@ def call_ollama(prompt: str) -> str:
         raise HTTPException(status_code=503, detail=f"Ollama not reachable or model unavailable. Run 'ollama pull {MODEL}' and check Ollama is running. Details: {exc}") from exc
 
 
+
+# Demo-only shared HTTP Basic access gate.
+# Production deployments should use individual accounts and proper authorization.
+@app.middleware("http")
+async def demo_access_gate(request, call_next):
+    import base64
+    import binascii
+    import hmac
+    from starlette.responses import Response
+
+    username = os.getenv("SCOPEGUARD_DEMO_USER", "")
+    password = os.getenv("SCOPEGUARD_DEMO_PASSWORD", "")
+
+    # Preserve local development when neither variable is configured.
+    if not username and not password:
+        return await call_next(request)
+
+    # Keep health checks available for Render.
+    if request.url.path == "/api/health":
+        return await call_next(request)
+
+    def unauthorized():
+        return Response(
+            "Demo access required",
+            status_code=401,
+            headers={"WWW-Authenticate": 'Basic realm="ScopeGuard Demo"'},
+        )
+
+    if not username or not password:
+        return unauthorized()
+
+    authorization = request.headers.get("authorization", "")
+    if not authorization.startswith("Basic "):
+        return unauthorized()
+
+    try:
+        credentials = base64.b64decode(
+            authorization[6:], validate=True
+        ).decode("utf-8")
+        entered_user, entered_password = credentials.split(":", 1)
+    except (ValueError, UnicodeDecodeError, binascii.Error):
+        return unauthorized()
+
+    valid_user = hmac.compare_digest(entered_user, username)
+    valid_password = hmac.compare_digest(entered_password, password)
+
+    if not (valid_user and valid_password):
+        return unauthorized()
+
+    return await call_next(request)
+
+
 @app.get("/")
 def homepage():
     return FileResponse(ROOT / "frontend" / "index.html")
