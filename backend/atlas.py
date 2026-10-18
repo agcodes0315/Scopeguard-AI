@@ -123,3 +123,35 @@ def record_route(payload: RecordException):
 @router.post('/preview')
 def preview_route(payload: PreviewRequest):
     return preview(payload)
+
+
+class AgreementVersionRequest(BaseModel):
+    project_id: str = Field(min_length=1)
+    agreement: str = Field(min_length=20, max_length=30000)
+
+
+def new_agreement_version(payload: AgreementVersionRequest, graph=None):
+    # Previous exceptions remain bound to old versions.
+    graph = graph if graph is not None else get_graph()
+    _, prior_version, _ = _current(graph, payload.project_id)
+    aid = secrets.token_hex(8)
+    version = prior_version + 1
+    graph.query('''MATCH (p:Project {id:$pid})
+        CREATE (a:Agreement {id:$aid, body:$body, version:$version})
+        CREATE (p)-[:HAS_AGREEMENT]->(a)''', {
+        'pid':payload.project_id,'aid':aid,'body':payload.agreement,'version':version})
+    from backend.graph_context import _clauses
+    clauses = _clauses(payload.agreement)
+    for idx, clause in enumerate(clauses):
+        graph.query('''MATCH (a:Agreement {id:$aid})
+            CREATE (c:Clause {id:$cid, text:$text, position:$idx})
+            CREATE (a)-[:CONTAINS]->(c)''', {
+            'aid':aid,'cid':f'{aid}:{idx}','text':clause,'idx':idx})
+    return {'project_id':payload.project_id,'agreement_id':aid,
+        'agreement_version':version,'previous_version':prior_version,
+        'clause_count':len(clauses), 'old_exceptions_auto_reused':False}
+
+
+@router.post('/agreement-version', status_code=201)
+def new_agreement_version_route(payload: AgreementVersionRequest):
+    return new_agreement_version(payload)

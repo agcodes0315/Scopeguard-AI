@@ -352,3 +352,8 @@ def atlas_script():
 # Read graph-backed history before selecting an advisory next action.
 from backend import atlas_action
 app.include_router(atlas_action.router)
+
+
+@app.get('/replay.html')
+def replay_page():
+    return FileResponse(ROOT / 'frontend' / 'replay.html')
