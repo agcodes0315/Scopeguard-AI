@@ -87,6 +87,23 @@ The example-requests page shows illustrative scenarios for understanding how Sco
 
 ---
 
+
+### 4. Workspace ? Agreement Vault & Scope Inbox
+
+![ScopeGuard workspace](docs/4.png)
+
+Create projects, manage agreement versions, and organize client requests.
+
+### 5. Agreement vs. Client Request ? Scope Analysis
+
+![ScopeGuard agreement and request analysis](docs/5.png)
+
+Review the original agreement and client request side by side.
+All examples use fictional data and require human review.
+
+
+---
+
 ## 🏗️ System architecture
 The real agent runs on a local FastAPI backend. Render serves a separate showcase and should **not** be confused with the operational stack.
 
