@@ -260,6 +260,7 @@ Ignored generated directories such as `.venv/`, `.pytest_cache/`, `__pycache__/`
 
 </tr>
 </table>
-**ScopeGuard makes the next action traceable to what was actually agreed not what the model happens to remember.**
+
+ScopeGuard makes the next action traceable to what was actually agreed not what the model happens to remember.
 
 *If this project helps you think differently about agreement-bound agent memory, consider starring the repository.*
