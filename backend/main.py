@@ -54,10 +54,15 @@ def call_ollama(prompt: str) -> str:
         ],
         "options": {"temperature": 0.1},
     }).encode("utf-8")
+    ollama_headers = {"Content-Type": "application/json"}
+    ollama_api_key = os.getenv("OLLAMA_API_KEY", "").strip()
+    if ollama_api_key:
+        ollama_headers["Authorization"] = f"Bearer {ollama_api_key}"
+
     request = urllib.request.Request(
         f"{OLLAMA_URL.rstrip('/')}/api/chat",
         data=data,
-        headers={"Content-Type": "application/json"},
+        headers=ollama_headers,
         method="POST",
     )
     try:
