@@ -357,3 +357,15 @@ app.include_router(atlas_action.router)
 @app.get('/replay.html')
 def replay_page():
     return FileResponse(ROOT / 'frontend' / 'replay.html')
+
+@app.get('/scopeguard-forest-freeze.css', include_in_schema=False)
+def forest_freeze_styles():
+    from fastapi.responses import FileResponse
+    from pathlib import Path
+    return FileResponse(Path(__file__).resolve().parent.parent / 'frontend' / 'scopeguard-forest-freeze.css', media_type='text/css')
+
+@app.get('/scopeguard-local-navigation.js', include_in_schema=False)
+def forest_freeze_navigation():
+    from fastapi.responses import FileResponse
+    from pathlib import Path
+    return FileResponse(Path(__file__).resolve().parent.parent / 'frontend' / 'scopeguard-local-navigation.js', media_type='application/javascript')
